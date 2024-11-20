@@ -1,6 +1,7 @@
 package gui.grundriss;
 
 import business.kunde.KundeModel;
+import business.sonderwunsch.SonderwunschModel;
 import javafx.stage.Modality;
 import javafx.stage.Stage;
 
@@ -12,6 +13,7 @@ public final class GrundrissControl {
 	
 	// das View-Objekt des Grundriss-Fensters
 	private GrundrissView grundrissView;
+	private SonderwunschModel sonderwunschModel;
 
 	/**
 	 * erzeugt ein ControlObjekt inklusive View-Objekt und Model-Objekt zum 
@@ -19,9 +21,10 @@ public final class GrundrissControl {
 	 * @param grundrissStage, Stage fuer das View-Objekt zu den Sonderwuenschen zum Grundriss
 	 */
 	public GrundrissControl(KundeModel kundeModel){  
+		this.sonderwunschModel = SonderwunschModel.getInstance();
 	   	Stage stageGrundriss = new Stage();
     	stageGrundriss.initModality(Modality.APPLICATION_MODAL);
-    	this.grundrissView = new GrundrissView(this, stageGrundriss);
+    	this.grundrissView = new GrundrissView(this, stageGrundriss, sonderwunschModel.getSonderwuensche());
 	}
 	    
 	/**
@@ -36,5 +39,13 @@ public final class GrundrissControl {
 	
 	public boolean pruefeKonstellationSonderwuensche(int[] ausgewaehlteSw){
 		return true;
+	}
+
+	public SonderwunschModel getSonderwunschModel() {
+		return sonderwunschModel;
+	}
+
+	public void setSonderwunschModel(SonderwunschModel sonderwunschModel) {
+		this.sonderwunschModel = sonderwunschModel;
 	}
 }
