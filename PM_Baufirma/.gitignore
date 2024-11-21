@@ -1,5 +1,9 @@
 /bin/
+/.metadata/
 .settings/
-javafx-sdk-17.0.13/
 .vscode/
+javafx-sdk-17.0.13/
 .env
+.project
+build.fxbuild
+.classpath
