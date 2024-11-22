@@ -1,5 +1,8 @@
 package gui.grundriss;
 
+import java.util.ArrayList;
+
+import business.sonderwunsch.Sonderwunsch;
 import gui.basis.BasisView;
 import javafx.scene.control.*;
 import javafx.stage.Stage;
@@ -12,14 +15,6 @@ public class GrundrissView extends BasisView{
  
  	// das Control-Objekt des Grundriss-Fensters
 	private GrundrissControl grundrissControl;
-   
-    //---Anfang Attribute der grafischen Oberflaeche---
-    private Label lblWandKueche    	     
-        = new Label("Wand zur Abtrennung der Küche von dem Essbereich");
-    private TextField txtPreisWandKueche 	= new TextField();
-    private Label lblWandKuecheEuro 		= new Label("Euro");
-    private CheckBox chckBxWandKueche 		= new CheckBox();
-    //-------Ende Attribute der grafischen Oberflaeche-------
   
     /**
      * erzeugt ein GrundrissView-Objekt, belegt das zugehoerige Control
@@ -27,24 +22,38 @@ public class GrundrissView extends BasisView{
      * @param grundrissControl GrundrissControl, enthaelt das zugehoerige Control
      * @param grundrissStage Stage, enthaelt das Stage-Objekt fuer diese View
      */
-    public GrundrissView (GrundrissControl grundrissControl, Stage grundrissStage){
+    public GrundrissView (GrundrissControl grundrissControl, Stage grundrissStage, ArrayList<Sonderwunsch> swListe){
     	super(grundrissStage);
         this.grundrissControl = grundrissControl;
+
         grundrissStage.setTitle("Sonderwünsche zu Grundriss-Varianten");
                 
-	    this.initKomponenten();
+	    this.initKomponenten(swListe);
 	    this.leseGrundrissSonderwuensche();
     }
   
     /* initialisiert die Steuerelemente auf der Maske */
-    protected void initKomponenten(){
+    protected void initKomponenten(ArrayList<Sonderwunsch> swListe){
     	super.initKomponenten(); 
        	super.getLblSonderwunsch().setText("Grundriss-Varianten");
-       	super.getGridPaneSonderwunsch().add(lblWandKueche, 0, 1);
-    	super.getGridPaneSonderwunsch().add(txtPreisWandKueche, 1, 1);
-    	txtPreisWandKueche.setEditable(false);
-    	super.getGridPaneSonderwunsch().add(lblWandKuecheEuro, 2, 1);
-    	super.getGridPaneSonderwunsch().add(chckBxWandKueche, 3, 1);
+       	
+       	int offset = 1;
+       	for(Sonderwunsch s : swListe) {
+       		
+       		super.getGridPaneSonderwunsch().add(new Label(s.getName()), 0, offset);
+       		
+       		TextField preisFeld = new TextField(Integer.toString(s.getPreis()));
+       		preisFeld.setEditable(false);
+        	super.getGridPaneSonderwunsch().add(preisFeld, 1, offset);
+        	
+        	super.getGridPaneSonderwunsch().add(new Label("Euro"), 2, offset);
+        	super.getGridPaneSonderwunsch().add(new CheckBox(), 3, offset);
+        	
+       		offset++;
+       	}
+       	
+       	
+
     }  
     
     /**
