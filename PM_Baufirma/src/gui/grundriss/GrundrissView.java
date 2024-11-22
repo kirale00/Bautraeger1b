@@ -15,8 +15,6 @@ public class GrundrissView extends BasisView{
  
  	// das Control-Objekt des Grundriss-Fensters
 	private GrundrissControl grundrissControl;
-	
-
   
     /**
      * erzeugt ein GrundrissView-Objekt, belegt das zugehoerige Control
@@ -27,7 +25,8 @@ public class GrundrissView extends BasisView{
     public GrundrissView (GrundrissControl grundrissControl, Stage grundrissStage, ArrayList<Sonderwunsch> swListe){
     	super(grundrissStage);
         this.grundrissControl = grundrissControl;
-        grundrissStage.setTitle("Sonderw�nsche zu Grundriss-Varianten");
+
+        grundrissStage.setTitle("Sonderwünsche zu Grundriss-Varianten");
                 
 	    this.initKomponenten(swListe);
 	    this.leseGrundrissSonderwuensche();
