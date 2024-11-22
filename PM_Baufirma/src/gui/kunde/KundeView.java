@@ -30,11 +30,12 @@ public class KundeView{
     private Label lblVorname         	= new Label("Vorname");
     private TextField txtVorname     	= new TextField();   
     private Button btnAnlegen	 	  	= new Button("Anlegen");
-    private Button btnAendern 	      	= new Button("Ändern");
-    private Button btnLoeschen 	 		= new Button("Löschen");
+    private Button btnAendern 	      	= new Button("�ndern");
+    private Button btnLoeschen 	 		= new Button("L�schen");
     private MenuBar mnBar 			  	= new MenuBar();
-    private Menu mnSonderwuensche    	= new Menu("Sonderwünsche");
+    private Menu mnSonderwuensche    	= new Menu("Sonderw�nsche");
     private MenuItem mnItmGrundriss  	= new MenuItem("Grundrissvarianten");
+    private MenuItem fensterMenuItem  	= new MenuItem("Fenster/Außentüren");
     //-------Ende Attribute der grafischen Oberflaeche-------
   
     /**
@@ -85,6 +86,7 @@ public class KundeView{
 	    borderPane.setTop(mnBar);
 	    mnBar.getMenus().add(mnSonderwuensche);
 	    mnSonderwuensche.getItems().add(mnItmGrundriss);
+	    mnSonderwuensche.getItems().add(fensterMenuItem);
     }
 
     /* initialisiert die Listener zu den Steuerelementen auf de Maske */
@@ -104,6 +106,9 @@ public class KundeView{
 	    });
       	mnItmGrundriss.setOnAction(aEvent-> {
  	        kundeControl.oeffneGrundrissControl(); 
+	    });
+      	fensterMenuItem.setOnAction(aEvent-> {
+ 	        kundeControl.oeffneFensterControl(); 
 	    });
     }
     
