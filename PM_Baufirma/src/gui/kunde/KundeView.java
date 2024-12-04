@@ -30,10 +30,10 @@ public class KundeView{
     private Label lblVorname         	= new Label("Vorname");
     private TextField txtVorname     	= new TextField();   
     private Button btnAnlegen	 	  	= new Button("Anlegen");
-    private Button btnAendern 	      	= new Button("�ndern");
-    private Button btnLoeschen 	 		= new Button("L�schen");
+    private Button btnAendern 	      	= new Button("Ändern");
+    private Button btnLoeschen 	 		= new Button("Löschen");
     private MenuBar mnBar 			  	= new MenuBar();
-    private Menu mnSonderwuensche    	= new Menu("Sonderw�nsche");
+    private Menu mnSonderwuensche    	= new Menu("Sonderwünsche");
     private MenuItem mnItmGrundriss  	= new MenuItem("Grundrissvarianten");
     private MenuItem fensterMenuItem  	= new MenuItem("Fenster/Außentüren");
     //-------Ende Attribute der grafischen Oberflaeche-------
