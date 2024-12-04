@@ -77,7 +77,7 @@ docker exec -it projekt-datenbank mysql -u root -p
 
 Zwischen `-p` und dem Passwort kommt **kein Leerzeichen!** Bei uns muss das also so aussehen:
 ```
-docker exec -it projetkmanagement-datenbank mysql -u root -prootpassword
+docker exec -it projektmanagement-datenbank mysql -u root -prootpassword
 ```
  
 2. Passwörter und Benutzer sind eigentlich in der `.env`-Datei zu finden.
