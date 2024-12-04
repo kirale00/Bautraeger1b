@@ -42,6 +42,7 @@ public class SonderwunschModel {
 		swArr.add(new Sonderwunsch("Vorrichtung eines Bades im DG", 990));
 		swArr.add(new Sonderwunsch("Ausführung eines Bades im DG", 8990));
 		
+
 		return swArr;
 		
 	}

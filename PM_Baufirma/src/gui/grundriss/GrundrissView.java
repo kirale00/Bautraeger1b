@@ -15,7 +15,11 @@ public class GrundrissView extends BasisView{
  
  	// das Control-Objekt des Grundriss-Fensters
 	private GrundrissControl grundrissControl;
-  
+	
+	private ArrayList<Sonderwunsch> swListe;
+	private ArrayList<CheckBox> checkBoxList = new ArrayList<>(); 
+	private TextField gesamtPreisTextField;
+	private int gesamtPreis=0;
     /**
      * erzeugt ein GrundrissView-Objekt, belegt das zugehoerige Control
      * mit dem vorgegebenen Objekt und initialisiert die Steuerelemente der Maske
@@ -26,7 +30,7 @@ public class GrundrissView extends BasisView{
     	super(grundrissStage);
         this.grundrissControl = grundrissControl;
         grundrissStage.setTitle("Sonderwünsche zu Grundriss-Varianten");
-                
+        this.swListe=swListe;        
 	    this.initKomponenten(swListe);
 	    this.leseGrundrissSonderwuensche();
     }
@@ -46,11 +50,23 @@ public class GrundrissView extends BasisView{
         	super.getGridPaneSonderwunsch().add(preisFeld, 1, offset);
         	
         	super.getGridPaneSonderwunsch().add(new Label("Euro"), 2, offset);
-        	super.getGridPaneSonderwunsch().add(new CheckBox(), 3, offset);
+        	CheckBox c = new CheckBox();
+        	super.getGridPaneSonderwunsch().add(c, 3, offset);
         	
+        	checkBoxList.add(c);
+        	//c.setOnAction(e -> berechneUndZeigePreisSonderwuensche());
        		offset++;
        	}
-       	
+     // Füge die Gesamtpreis-Zeile hinzu
+        Label gesamtLabel = new Label("Gesamtpreis:");
+        super.getGridPaneSonderwunsch().add(gesamtLabel, 0, offset);
+        
+   		gesamtPreisTextField = new TextField(Integer.toString(gesamtPreis));
+   		gesamtPreisTextField.setEditable(false);
+    	super.getGridPaneSonderwunsch().add(gesamtPreisTextField, 1, offset);
+
+        Label gesamtpreisLabel = new Label("Euro");
+        super.getGridPaneSonderwunsch().add(gesamtpreisLabel, 2, offset);
        	
 
     }  
@@ -69,55 +85,45 @@ public class GrundrissView extends BasisView{
     private void leseGrundrissSonderwuensche(){
     	this.grundrissControl.leseGrundrissSonderwuensche();
     }
-    
+    private int[] fuelleSwListe() {
+    	int[] ausgewaehlteSw= new int[swListe.size()];
+    	for (int i = 0; i < swListe.size(); i++) {
+  			if(checkBoxList.get(i).isSelected()) {
+  				ausgewaehlteSw[i]=1;
+  			}else {
+  				ausgewaehlteSw[i]=0;
+  			}
+  		
+  		}
+    	return ausgewaehlteSw;
+    }
  	/* berechnet den Preis der ausgesuchten Sonderwuensche und zeigt diesen an */
   	protected void berechneUndZeigePreisSonderwuensche(){
-  		
-  		//this.grundrissControl.pruefeKonstellationSonderwuensche(null);
+		int[] ausgewaehlteSw = fuelleSwListe();
 
   		
-  		
-  		
-  		//Start Preisberechnung
-  		int preisAusgabe=0;
-  		
-  		if(this.chckBxAusfuehrungBad.isSelected()) {
-  			 preisAusgabe+=Integer.parseInt(txtPreisAusfuehrungBad.getText());
-
-   		 }
-  		if(this.chckBxVorrichtungBad.isSelected()) {
-  			 preisAusgabe+=Integer.parseInt(txtPreisVorrichtungBad.getText());
-
-   		 }
-  		if(this.chckBxGrossesZimmer.isSelected()) {
-			 	preisAusgabe+=Integer.parseInt(txtPreisGrossesZimmer.getText());
-
-		 }
-  		if(this.chckBxAbgetrennterTreppenraum.isSelected()) {
-  			 preisAusgabe+=Integer.parseInt(txtPreisAbgetrennterTreppenraum.getText());
-
-      		}
-  		if(this.chckBxTuerKueche.isSelected()) {
-   			preisAusgabe+=Integer.parseInt(txtPreisTuerKueche.getText());
-
-   		}
-  		 if(this.chckBxWandKueche.isSelected()) {
-			 preisAusgabe+=Integer.parseInt(txtPreisWandKueche.getText());
-		 }
-  		 //Ende Preisberechnung
-  		 
-  		 
-  		txtPreisGesamt.setText("" + preisAusgabe); 
-  		lblAusgabe.setVisible(true);
-       	txtPreisGesamt.setVisible(true);
-       	lblAusgabeEuro.setVisible(true);
-       	
-  		// Es wird erst die Methode pruefeKonstellationSonderwuensche(int[] ausgewaehlteSw)
+  		Boolean berechnePreis = this.grundrissControl.pruefeKonstellationSonderwuensche(ausgewaehlteSw);
+  		if(berechnePreis) {
+  			for (int i = 0; i < swListe.size(); i++) {
+  	  	        if (checkBoxList.get(i).isSelected()) {
+  	  	            gesamtPreis += swListe.get(i).getPreis();
+  	  	        }
+  	  	    }
+  	  	    gesamtPreisTextField.setText(Integer.toString(gesamtPreis));
+  	  	    gesamtPreis=0;
+  		}
+  			
+  	    // Es wird erst die Methode pruefeKonstellationSonderwuensche(int[] ausgewaehlteSw)
   		// aus dem Control aufgerufen, dann der Preis berechnet.
   	}
   	
    	/* speichert die ausgesuchten Sonderwuensche in der Datenbank ab */
   	protected void speichereSonderwuensche(){
+  		int[] ausgewaehlteSw = fuelleSwListe();
+  		Boolean speichereSw = this.grundrissControl.pruefeKonstellationSonderwuensche(ausgewaehlteSw);
+  		if(speichereSw) {
+  			//TO-DO gespeicherte Sonderwünsche in der Datenbank speichern
+  		}
  		// Es wird erst die Methode pruefeKonstellationSonderwuensche(int[] ausgewaehlteSw)
   		// aus dem Control aufgerufen, dann die Sonderwuensche gespeichert.
   	}
