@@ -31,7 +31,7 @@ public class ParkettView extends BasisView{
        	
        	int offset = 1;
        	for(Sonderwunsch s : swListe.subList(33, 43)) {
-       		
+			
        		super.getGridPaneSonderwunsch().add(new Label(s.getName()), 0, offset);
        		
        		TextField preisFeld = new TextField(Integer.toString(s.getPreis()));

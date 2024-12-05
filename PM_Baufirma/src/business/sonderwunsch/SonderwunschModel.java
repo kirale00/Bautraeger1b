@@ -2,6 +2,7 @@ package business.sonderwunsch;
 
 import java.sql.SQLException;
 import java.util.ArrayList;
+import java.nio.charset.StandardCharsets;
 import java.sql.*;
 
 public class SonderwunschModel {
@@ -49,33 +50,33 @@ public class SonderwunschModel {
 		String url = "jdbc:mysql://localhost:3306/SonderwunschVerwaltung?useUnicode=true&characterEncoding=utf8";
 		String user = "root";
 		String password = "rootpassword";
-	
 		String query = "SELECT beschreibung, preis FROM Sonderwunsch";
 	
-		try (Connection conn = DriverManager.getConnection(url, user, password);
-			 PreparedStatement stmt = conn.prepareStatement(query);
-			 ResultSet rs = stmt.executeQuery()) {
-			 System.out.println("Verbindung zur Datenbank hergestellt.");
-	
-			while (rs.next()) {
-				String beschreibung = rs.getString("beschreibung");
-				double preis = rs.getDouble("preis");
-				swArr.add(new Sonderwunsch(beschreibung, (int) preis));
-
+		try (Connection conn = DriverManager.getConnection(url, user, password)) {
+			// Setze den Zeichensatz für die aktuelle Sitzung
+			try (Statement stmt = conn.createStatement()) {
+				stmt.execute("SET NAMES utf8mb4");
+				System.out.println("Zeichensatz auf UTF-8 gesetzt.");
 			}
-			System.out.println("Sonderwünsche erhalten.");
+	
+			// Bereite die Abfrage vor und führe sie aus
+			try (PreparedStatement stmt = conn.prepareStatement(query);
+				 ResultSet rs = stmt.executeQuery()) {
+	
+				System.out.println("Verbindung zur Datenbank hergestellt.");
+				while (rs.next()) {
+					String beschreibung = new String(rs.getBytes("beschreibung"), StandardCharsets.UTF_8);
+					double preis = rs.getDouble("preis");
+					swArr.add(new Sonderwunsch(beschreibung, (int) preis));
+				}
+				System.out.println("Sonderwünsche erhalten.");
+			}
 	
 		} catch (SQLException e) {
-
 			e.printStackTrace();
 		}
 	
 		return swArr;
 	}
-	
-	
-	
-
-	
 	
 }
