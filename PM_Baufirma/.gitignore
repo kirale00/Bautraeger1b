@@ -3,7 +3,7 @@
 .settings/
 .vscode/
 javafx-sdk-17.0.13/
-src/.env
+.env
 .project
 build.fxbuild
 .classpath

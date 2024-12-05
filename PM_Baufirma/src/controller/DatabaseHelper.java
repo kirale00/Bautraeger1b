@@ -17,7 +17,7 @@ public class DatabaseHelper {
 
     public DatabaseHelper() {
         try {
-            Files.lines(Path.of("PM_Baufirma/src/.env"))
+            Files.lines(Path.of("PM_Baufirma/.env"))
                     .filter(line -> line.contains("="))
                     .forEach(this::load);
         } catch (IOException e) {
