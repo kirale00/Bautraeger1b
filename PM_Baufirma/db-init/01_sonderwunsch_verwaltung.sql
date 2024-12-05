@@ -8,7 +8,7 @@ CREATE TABLE Haus (
 
 CREATE TABLE Sonderwunsch (
     SonderwunschID INT NOT NULL AUTO_INCREMENT PRIMARY KEY,
-    Beschreibung TEXT NOT NULL,
+    Beschreibung TEXT CHARACTER SET utf8mb4 NOT NULL,
     Preis DECIMAL(10, 2), -- Unter 100 Millionen
     AnzahlVerfuegbar INT DEFAULT NULL
 );

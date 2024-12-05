@@ -38,7 +38,7 @@ public class GrundrissView extends BasisView{
        	super.getLblSonderwunsch().setText("Grundriss-Varianten");
        	
        	int offset = 1;
-       	for(Sonderwunsch s : swListe) {
+       	for(Sonderwunsch s : swListe.subList(0, 6)) {
        		
        		super.getGridPaneSonderwunsch().add(new Label(s.getName()), 0, offset);
        		

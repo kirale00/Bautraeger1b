@@ -2,10 +2,7 @@ package business.sonderwunsch;
 
 import java.sql.SQLException;
 import java.util.ArrayList;
-
-import javafx.collections.*;
-
-import business.kunde.KundeModel;
+import java.sql.*;
 
 public class SonderwunschModel {
 	
@@ -33,7 +30,7 @@ public class SonderwunschModel {
 		this.sonderwuensche = sonderwuensche;
 	}
 	
-	private ArrayList<Sonderwunsch> fetchSonderwuensche() { // durch datenbankzugriff ersetzen, sobald DB fertig
+	/*private ArrayList<Sonderwunsch> fetchSonderwuensche() { // durch datenbankzugriff ersetzen, sobald DB fertig
 		ArrayList<Sonderwunsch> swArr = new ArrayList<Sonderwunsch>();
 		swArr.add(new Sonderwunsch("Wand zur Abtrennung der Küche von dem Essbereich", 300));
 		swArr.add(new Sonderwunsch("Tür in der Wand zwischen Küche und Essbereich", 300));
@@ -44,8 +41,38 @@ public class SonderwunschModel {
 		
 		return swArr;
 		
-	}
+	}*/
+	
+	private ArrayList<Sonderwunsch> fetchSonderwuensche() {
+		ArrayList<Sonderwunsch> swArr = new ArrayList<>();
+		// Muss noch an die .env-Datei angeschlossen werden
+		String url = "jdbc:mysql://localhost:3306/SonderwunschVerwaltung?useUnicode=true&characterEncoding=utf";
+		String user = "root";
+		String password = "rootpassword";
+	
+		String query = "SELECT beschreibung, preis FROM Sonderwunsch";
+	
+		try (Connection conn = DriverManager.getConnection(url, user, password);
+			 PreparedStatement stmt = conn.prepareStatement(query);
+			 ResultSet rs = stmt.executeQuery()) {
+			 System.out.println("Verbindung zur Datenbank hergestellt.");
+	
+			while (rs.next()) {
+				String beschreibung = rs.getString("beschreibung");
+				double preis = rs.getDouble("preis");
+				swArr.add(new Sonderwunsch(beschreibung, (int) preis));
 
+			}
+			System.out.println("Sonderwünsche erhalten.");
+	
+		} catch (SQLException e) {
+
+			e.printStackTrace();
+		}
+	
+		return swArr;
+	}
+	
 	
 	
 
