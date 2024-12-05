@@ -5,6 +5,8 @@ import java.sql.SQLException;
 import business.kunde.Kunde;
 import business.kunde.KundeModel;
 import gui.grundriss.GrundrissControl;
+import gui.heizungen.HeizungenControl;
+import gui.innentüren.InnentuerenControl;
 import gui.fenster.FensterControl;
 import javafx.stage.Stage;
 
@@ -21,6 +23,8 @@ public class KundeControl {
        zum Grundriss zu dem Kunden */
     private GrundrissControl grundrissControl;
     private FensterControl fensterControl;
+    private HeizungenControl heizungenControl;
+    private InnentuerenControl innentuerenControl;
     
     /**
 	 * erzeugt ein ControlObjekt inklusive View-Objekt und Model-Objekt zum 
@@ -47,6 +51,20 @@ public class KundeControl {
     		this.fensterControl = new FensterControl(kundeModel);
       	}
     	this.fensterControl.oeffneFensterView();
+    }
+    
+    public void oeffneHeizungenControl(){
+    	if (this.heizungenControl == null){
+    		this.heizungenControl = new HeizungenControl(kundeModel);
+      	}
+    	this.heizungenControl.oeffneHeizungenView();
+    }
+    
+    public void oeffneInnentuerenControl(){
+    	if (this.innentuerenControl == null){
+    		this.innentuerenControl = new InnentuerenControl(kundeModel);
+      	}
+    	this.innentuerenControl.oeffneInnentuerenView();
     }
     
 	/**

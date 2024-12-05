@@ -36,6 +36,8 @@ public class KundeView{
     private Menu mnSonderwuensche    	= new Menu("Sonderwünsche");
     private MenuItem mnItmGrundriss  	= new MenuItem("Grundrissvarianten");
     private MenuItem fensterMenuItem  	= new MenuItem("Fenster/Außentüren");
+    private MenuItem mnItmHeizungen 	= new MenuItem("Heizungsvarianten");
+    private MenuItem mnItmInnentueren 	= new MenuItem("Innentuerenvarianten");
     //-------Ende Attribute der grafischen Oberflaeche-------
   
     /**
@@ -109,6 +111,12 @@ public class KundeView{
 	    });
       	fensterMenuItem.setOnAction(aEvent-> {
  	        kundeControl.oeffneFensterControl(); 
+	    });
+      	mnItmHeizungen.setOnAction(aEvent-> {
+ 	        kundeControl.oeffneHeizungenControl(); 
+	    });
+      	mnItmInnentueren.setOnAction(aEvent-> {
+ 	        kundeControl.oeffneInnentuerenControl(); 
 	    });
     }
     
