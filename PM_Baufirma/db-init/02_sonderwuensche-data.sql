@@ -1,5 +1,6 @@
 -- Hier kommen die fundamentalen Sonderwuensche rein
 USE SonderwunschVerwaltung;
+SET NAMES utf8mb4;
 
 INSERT INTO Sonderwunsch (Beschreibung, Preis, AnzahlVerfuegbar)
 VALUES

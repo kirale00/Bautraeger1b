@@ -1,4 +1,7 @@
-CREATE DATABASE IF NOT EXISTS SonderwunschVerwaltung;
+CREATE DATABASE IF NOT EXISTS SonderwunschVerwaltung
+CHARACTER SET utf8mb4
+COLLATE utf8mb4_unicode_ci;
+
 USE SonderwunschVerwaltung;
 
 CREATE TABLE Haus (
@@ -8,7 +11,7 @@ CREATE TABLE Haus (
 
 CREATE TABLE Sonderwunsch (
     SonderwunschID INT NOT NULL AUTO_INCREMENT PRIMARY KEY,
-    Beschreibung TEXT CHARACTER SET utf8mb4 NOT NULL,
+    Beschreibung TEXT CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL,
     Preis DECIMAL(10, 2), -- Unter 100 Millionen
     AnzahlVerfuegbar INT DEFAULT NULL
 );
