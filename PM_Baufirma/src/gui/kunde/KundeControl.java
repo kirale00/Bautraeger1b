@@ -5,6 +5,7 @@ import java.sql.SQLException;
 import business.kunde.Kunde;
 import business.kunde.KundeModel;
 import gui.grundriss.GrundrissControl;
+import gui.parkett.ParkettControl;
 import gui.fenster.FensterControl;
 import javafx.stage.Stage;
 
@@ -21,7 +22,8 @@ public class KundeControl {
        zum Grundriss zu dem Kunden */
     private GrundrissControl grundrissControl;
     private FensterControl fensterControl;
-    
+	private ParkettControl parkettControl;
+
     /**
 	 * erzeugt ein ControlObjekt inklusive View-Objekt und Model-Objekt zum 
 	 * Grundfenster mit den Kundendaten.
@@ -48,7 +50,13 @@ public class KundeControl {
       	}
     	this.fensterControl.oeffneFensterView();
     }
-    
+    public void oeffneParkettControl(){
+    	if (this.parkettControl == null){
+    		this.parkettControl = new ParkettControl(kundeModel);
+      	}
+    	this.parkettControl.oeffneParkettView();
+    }
+
 	/**
 	 * speichert ein Kunde-Objekt in die Datenbank
 	 * @param kunde, Kunde-Objekt, welches zu speichern ist

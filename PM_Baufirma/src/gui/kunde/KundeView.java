@@ -36,6 +36,7 @@ public class KundeView{
     private Menu mnSonderwuensche    	= new Menu("Sonderwünsche");
     private MenuItem mnItmGrundriss  	= new MenuItem("Grundrissvarianten");
     private MenuItem fensterMenuItem  	= new MenuItem("Fenster/Außentüren");
+	private MenuItem parkettMenuItem  	= new MenuItem("Parkett");
     //-------Ende Attribute der grafischen Oberflaeche-------
   
     /**
@@ -87,6 +88,7 @@ public class KundeView{
 	    mnBar.getMenus().add(mnSonderwuensche);
 	    mnSonderwuensche.getItems().add(mnItmGrundriss);
 	    mnSonderwuensche.getItems().add(fensterMenuItem);
+		mnSonderwuensche.getItems().add(parkettMenuItem);
     }
 
     /* initialisiert die Listener zu den Steuerelementen auf de Maske */
@@ -110,6 +112,9 @@ public class KundeView{
       	fensterMenuItem.setOnAction(aEvent-> {
  	        kundeControl.oeffneFensterControl(); 
 	    });
+		parkettMenuItem.setOnAction(aEvent-> {
+			kundeControl.oeffneParkettControl(); 
+	   });
     }
     
     private void holeInfoDachgeschoss(){ 
