@@ -46,7 +46,7 @@ public class SonderwunschModel {
 	private ArrayList<Sonderwunsch> fetchSonderwuensche() {
 		ArrayList<Sonderwunsch> swArr = new ArrayList<>();
 		// Muss noch an die .env-Datei angeschlossen werden
-		String url = "jdbc:mysql://localhost:3306/SonderwunschVerwaltung?useUnicode=true&characterEncoding=utf";
+		String url = "jdbc:mysql://localhost:3306/SonderwunschVerwaltung?useUnicode=true&characterEncoding=utf8";
 		String user = "root";
 		String password = "rootpassword";
 	
