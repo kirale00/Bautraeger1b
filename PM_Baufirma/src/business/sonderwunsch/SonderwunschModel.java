@@ -1,11 +1,11 @@
 package business.sonderwunsch;
 
+import controller.DatabaseHelper;
+
 import java.sql.SQLException;
 import java.util.ArrayList;
-
-import javafx.collections.*;
-
-import business.kunde.KundeModel;
+import java.nio.charset.StandardCharsets;
+import java.sql.*;
 
 public class SonderwunschModel {
 	
@@ -33,7 +33,7 @@ public class SonderwunschModel {
 		this.sonderwuensche = sonderwuensche;
 	}
 	
-	private ArrayList<Sonderwunsch> fetchSonderwuensche() { // durch datenbankzugriff ersetzen, sobald DB fertig
+	/*private ArrayList<Sonderwunsch> fetchSonderwuensche() { // durch datenbankzugriff ersetzen, sobald DB fertig
 		ArrayList<Sonderwunsch> swArr = new ArrayList<Sonderwunsch>();
 		final int KATEGORIEID=1;
 		swArr.add(new Sonderwunsch("Wand zur Abtrennung der Küche von dem Essbereich", 300,KATEGORIEID));
@@ -46,11 +46,41 @@ public class SonderwunschModel {
 
 		return swArr;
 		
+	}*/
+	
+	private ArrayList<Sonderwunsch> fetchSonderwuensche() {
+		ArrayList<Sonderwunsch> swArr = new ArrayList<>();
+		// Muss noch an die .env-Datei angeschlossen werden
+		/*String url = "jdbc:mysql://localhost:3306/SonderwunschVerwaltung?useUnicode=true&characterEncoding=utf8";
+		String user = "root";
+		String password = "rootpassword";*/
+		String query = "SELECT beschreibung, preis FROM Sonderwunsch";
+	
+		try (Connection conn = new DatabaseHelper().getConnection()) {
+			// Setze den Zeichensatz für die aktuelle Sitzung
+			try (Statement stmt = conn.createStatement()) {
+				stmt.execute("SET NAMES utf8mb4");
+				System.out.println("Zeichensatz auf UTF-8 gesetzt.");
+			}
+	
+			// Bereite die Abfrage vor und führe sie aus
+			try (PreparedStatement stmt = conn.prepareStatement(query);
+				 ResultSet rs = stmt.executeQuery()) {
+	
+				System.out.println("Verbindung zur Datenbank hergestellt.");
+				while (rs.next()) {
+					String beschreibung = new String(rs.getBytes("beschreibung"), StandardCharsets.UTF_8);
+					double preis = rs.getDouble("preis");
+					swArr.add(new Sonderwunsch(beschreibung, (int) preis));
+				}
+				System.out.println("Sonderwünsche erhalten.");
+			}
+	
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
+	
+		return swArr;
 	}
-
-	
-	
-
-	
 	
 }
