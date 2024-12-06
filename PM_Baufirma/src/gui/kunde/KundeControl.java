@@ -76,4 +76,23 @@ public class KundeControl {
                 "Unbekannter Fehler");
     	}
     }
+
+	public void aendereKunden(Kunde kunde, Integer kundennummer){
+		try{
+			kundeModel.aendereKunden(kunde, kundennummer);
+		}catch(SQLException exc){
+			exc.printStackTrace();
+			this.kundeView.zeigeFehlermeldung("SQLException",
+					"Fehler beim Speichern in die Datenbank");
+		}
+		catch(Exception exc){
+			exc.printStackTrace();
+			this.kundeView.zeigeFehlermeldung("Exception",
+					"Unbekannter Fehler");
+		}
+	}
+
+	public void loescheKunden(Integer kundennummer){
+		kundeModel.loescheKunden(kundennummer);
+	}
 }
