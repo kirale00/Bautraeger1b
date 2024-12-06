@@ -33,9 +33,9 @@ public class DatabaseHelper {
 
             switch (key) {
                 case "MYSQL_USER":
-                    db_user = "root";
+                    db_user = value;
                     break;
-                case "MYSQL_ROOT_PASSWORD":
+                case "MYSQL_PASSWORD":
                 	db_password = value;
                     break;
                 case "MYSQL_DATABASE":
