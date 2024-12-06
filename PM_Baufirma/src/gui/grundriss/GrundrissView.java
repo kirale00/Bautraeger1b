@@ -34,7 +34,7 @@ public class GrundrissView extends BasisView{
     	super(grundrissStage);
         this.grundrissControl = grundrissControl;
         grundrissStage.setTitle("Sonderwünsche zu Grundriss-Varianten");
-        this.swListe=swListe;        
+        this.swListe=new ArrayList<Sonderwunsch>(swListe.subList(0, 6));        
 	    this.initKomponenten(swListe);
 	    this.leseGrundrissSonderwuensche();
     }
@@ -147,7 +147,7 @@ public class GrundrissView extends BasisView{
   	    		  
   	    		  stmt.setString(1, swListe.get(i).getName());
   	    		  stmt.setDouble(2, swListe.get(i).getPreis());
-  	    		  stmt.setInt(3, swListe.get(i).getKategorieId());
+  	    		  stmt.setInt(3, 1);
   	    		  stmt.addBatch();
   	    	  }
   	    	  

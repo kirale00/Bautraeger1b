@@ -2,14 +2,14 @@ package business.sonderwunsch;
 
 public class Sonderwunsch {
 	
-	private double preis;
+	private int preis;
 	private String name;
 	private int kategorieId;
 	
-	public Sonderwunsch(String name, int preis, int kategorieId) {
+	public Sonderwunsch(String name, int preis) {
 		this.name = name;
 		this.preis = preis;
-		this.kategorieId=kategorieId;
+		
 	}
 	
 	public String getName() {
@@ -18,16 +18,11 @@ public class Sonderwunsch {
 	public void setName(String name) {
 		this.name = name;
 	}
-	public double getPreis() {
+	public int getPreis() {
 		return preis;
 	}
-	public void setPreis(double preis) {
+	public void setPreis(int preis) {
 		this.preis = preis;
 	}
-	public int getKategorieId() {
-		return kategorieId;
-	}
-	public void setKategorieId(int kategorieId) {
-		this.kategorieId = kategorieId;
-	}
+
 }

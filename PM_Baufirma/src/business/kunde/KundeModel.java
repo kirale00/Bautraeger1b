@@ -1,5 +1,6 @@
 package business.kunde;
 
+import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
@@ -64,12 +65,12 @@ public final class KundeModel {
 
 	public ObservableList<Integer> getKundenNummern() {
         try {
-			var connection = new DatabaseHelper().getConnection();
+			Connection connection = new DatabaseHelper().getConnection();
 			Statement selectStatement = null;
             selectStatement = connection.createStatement();
-			var sql = "SELECT (Kundennummer) from Kunde where Kundennummer != 0";
-			var rs = selectStatement.executeQuery(sql);
-			var resultArray = FXCollections.observableArrayList(0);
+			String sql = "SELECT (Kundennummer) from Kunde where Kundennummer != 0";
+			ResultSet rs = selectStatement.executeQuery(sql);
+			ObservableList<Integer> resultArray = FXCollections.observableArrayList(0);
 			while (rs.next()) {
 				resultArray.add(rs.getInt("Kundennummer"));
 			}
@@ -82,7 +83,7 @@ public final class KundeModel {
 
 	public void loescheKunden(int kundennummer) {
 		try {
-			var connection = new DatabaseHelper().getConnection();
+			Connection connection = new DatabaseHelper().getConnection();
 			PreparedStatement deleteStatement = connection.prepareStatement("DELETE FROM Kunde WHERE Kundennummer = ?");
 			deleteStatement.setInt(1, kundennummer);
 			int rowsAffected = deleteStatement.executeUpdate();
@@ -106,7 +107,7 @@ public final class KundeModel {
 	public void speichereKunden(Kunde kunde)
 	    throws SQLException, Exception{
 		//System.out.println(kunde);
-        var connection = new DatabaseHelper().getConnection();
+        Connection connection = new DatabaseHelper().getConnection();
 		PreparedStatement insertStatement = connection.prepareStatement("INSERT INTO Kunde (Vorname, Nachname, Email, Telefonnummer, Hausnummer) values (?,?,?,?,?)");
 		insertStatement.setString(1, kunde.getVorname());
 		insertStatement.setString(2, kunde.getNachname());
@@ -119,7 +120,7 @@ public final class KundeModel {
 
 	public void aendereKunden(Kunde kunde, Integer kundennummer)
 			throws SQLException, Exception {
-		var connection = new DatabaseHelper().getConnection();
+		Connection connection = new DatabaseHelper().getConnection();
 		PreparedStatement updateStatement = connection.prepareStatement(
 				"UPDATE Kunde SET Vorname = ?, Nachname = ?, Email = ?, Telefonnummer = ?, Hausnummer = ? WHERE Kundennummer = ?"
 		);
@@ -142,7 +143,7 @@ public final class KundeModel {
 
 	public Kunde getKundeByNummer(int kundennummer) {
 		try {
-			var connection = new DatabaseHelper().getConnection();
+			Connection connection = new DatabaseHelper().getConnection();
 			PreparedStatement selectStatement = connection.prepareStatement("SELECT * FROM Kunde WHERE Kundennummer = ?");
 			selectStatement.setInt(1, kundennummer);
 			ResultSet rs = selectStatement.executeQuery();

@@ -17,7 +17,7 @@ public class DatabaseHelper {
 
     public DatabaseHelper() {
         try {
-            Files.lines(Path.of("PM_Baufirma/.env"))
+            Files.lines(Path.of(".env"))
                     .filter(line -> line.contains("="))
                     .forEach(this::load);
         } catch (IOException e) {
@@ -33,10 +33,10 @@ public class DatabaseHelper {
 
             switch (key) {
                 case "MYSQL_USER":
-                    db_user = value;
+                    db_user = "root";
                     break;
-                case "MYSQL_ROOT_PASSWORD", "MYSQL_PASSWORD":
-                    db_password = value;
+                case "MYSQL_ROOT_PASSWORD":
+                	db_password = value;
                     break;
                 case "MYSQL_DATABASE":
                     db_database = value;
