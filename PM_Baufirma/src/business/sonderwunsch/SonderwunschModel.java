@@ -1,5 +1,7 @@
 package business.sonderwunsch;
 
+import controller.DatabaseHelper;
+
 import java.sql.SQLException;
 import java.util.ArrayList;
 import java.nio.charset.StandardCharsets;
@@ -47,12 +49,12 @@ public class SonderwunschModel {
 	private ArrayList<Sonderwunsch> fetchSonderwuensche() {
 		ArrayList<Sonderwunsch> swArr = new ArrayList<>();
 		// Muss noch an die .env-Datei angeschlossen werden
-		String url = "jdbc:mysql://localhost:3306/SonderwunschVerwaltung?useUnicode=true&characterEncoding=utf8";
+		/*String url = "jdbc:mysql://localhost:3306/SonderwunschVerwaltung?useUnicode=true&characterEncoding=utf8";
 		String user = "root";
-		String password = "rootpassword";
+		String password = "rootpassword";*/
 		String query = "SELECT beschreibung, preis FROM Sonderwunsch";
 	
-		try (Connection conn = DriverManager.getConnection(url, user, password)) {
+		try (Connection conn = new DatabaseHelper().getConnection()) {
 			// Setze den Zeichensatz für die aktuelle Sitzung
 			try (Statement stmt = conn.createStatement()) {
 				stmt.execute("SET NAMES utf8mb4");

@@ -10,6 +10,8 @@ import javafx.scene.layout.*;
 import javafx.scene.text.*;
 import javafx.stage.Stage;
 
+import java.sql.SQLException;
+
 /**
  * Klasse, welche das Grundfenster mit den Kundendaten bereitstellt.
  */
@@ -25,11 +27,20 @@ public class KundeView{
 	private GridPane gridPane 			= new GridPane();
 	private Label lblKunde    	      	= new Label("Kunde");
     private Label lblNummerHaus     	= new Label("Plannummer des Hauses");
-    private ComboBox<Integer> 
-        cmbBxNummerHaus                 = new ComboBox<Integer>();
-    private Label lblVorname         	= new Label("Vorname");
-    private TextField txtVorname     	= new TextField();   
-    private Button btnAnlegen	 	  	= new Button("Anlegen");
+    private ComboBox<Integer> cmbBxNummerHaus = new ComboBox<Integer>();
+	private Label lblKundeDropdown     	= new Label("Vorhandene Kunden");
+	private ComboBox<Integer> cmbKundeDropdown = new ComboBox<Integer>();
+    private Label lblVorname        = new Label("Vorname");
+    private TextField txtVorname    = new TextField();
+	private Label lblNachname       = new Label("Nachname");
+	private TextField txtNachname   = new TextField();
+	private Label lblEmail         	= new Label("Email");
+	private TextField txtEmail     	= new TextField();
+	private Label lblTelefon        = new Label("Telefonnummer");
+	private TextField txtTelefon    = new TextField();
+	private Label lblHausnummer     = new Label("Hausnummer");
+	private TextField txtHausnummer = new TextField();
+	private Button btnAnlegen	 	  	= new Button("Anlegen");
     private Button btnAendern 	      	= new Button("Ändern");
     private Button btnLoeschen 	 		= new Button("Löschen");
     private MenuBar mnBar 			  	= new MenuBar();
@@ -51,7 +62,7 @@ public class KundeView{
         this.kundeModel = kundeModel;
         
         primaryStage.setTitle(this.kundeModel.getUeberschrift());	
-	    Scene scene = new Scene(borderPane, 550, 400);
+	    Scene scene = new Scene(borderPane, 550, 600);
 	    primaryStage.setScene(scene);
         primaryStage.show();
 
@@ -61,12 +72,11 @@ public class KundeView{
 
  
     /* initialisiert die Steuerelemente auf der Maske */
-    private void initKomponenten(){
+    private void initKomponenten() {
     	borderPane.setCenter(gridPane);
 	    gridPane.setHgap(10);
 	    gridPane.setVgap(10);
 	    gridPane.setPadding(new Insets(25, 25, 25, 25));
-       	
 	    gridPane.add(lblKunde, 0, 1);
        	lblKunde.setMinSize(150, 40);
 	    lblKunde.setFont(Font.font("Arial", FontWeight.BOLD, 24));
@@ -74,14 +84,31 @@ public class KundeView{
 	    gridPane.add(cmbBxNummerHaus, 1, 2);
 	    cmbBxNummerHaus.setMinSize(150,  25);
 	    cmbBxNummerHaus.setItems(this.kundeModel.getPlannummern());
-	    gridPane.add(lblVorname, 0, 3);
-	    gridPane.add(txtVorname, 1, 3);
+
+		gridPane.add(lblKundeDropdown, 0, 4);
+		gridPane.add(cmbKundeDropdown, 1, 4);
+		cmbKundeDropdown.setItems(this.kundeModel.getKundenNummern());
+		cmbKundeDropdown.getSelectionModel().selectedItemProperty().addListener((observable, oldValue, newValue) -> {
+			if(newValue != null){
+				this.leseKunde(newValue);
+			}
+		});
+	    gridPane.add(lblVorname, 0, 5);
+	    gridPane.add(txtVorname, 1, 5);
+		gridPane.add(lblNachname, 0, 7);
+		gridPane.add(txtNachname, 1, 7);
+		gridPane.add(lblEmail, 0, 9);
+		gridPane.add(txtEmail, 1, 9);
+		gridPane.add(lblTelefon, 0, 11);
+		gridPane.add(txtTelefon, 1, 11);
+		gridPane.add(lblHausnummer, 0, 13);
+		gridPane.add(txtHausnummer, 1, 13);
 	    // Buttons
-	    gridPane.add(btnAnlegen, 0, 7);
+	    gridPane.add(btnAnlegen, 0, 16);
 	    btnAnlegen.setMinSize(150,  25);
-	    gridPane.add(btnAendern, 1, 7);
+	    gridPane.add(btnAendern, 1, 16);
 	    btnAendern.setMinSize(150,  25);
-	    gridPane.add(btnLoeschen, 2, 7);
+	    gridPane.add(btnLoeschen, 2, 16);
 	    btnLoeschen.setMinSize(150,  25);
 	    // MenuBar und Menu
 	    borderPane.setTop(mnBar);
@@ -119,21 +146,69 @@ public class KundeView{
     
     private void holeInfoDachgeschoss(){ 
     }
+
+	private void leseKunden(){}
     
-    private void leseKunden(){
+    private void leseKunde(int kundennummer){
+		if(kundennummer == 0) {
+			txtVorname.setText("");
+			txtNachname.setText("");
+			txtEmail.setText("");
+			txtTelefon.setText("");
+			txtHausnummer.setText("");
+			return;
+		}
+		var kunde = this.kundeModel.getKundeByNummer(kundennummer);
+		txtVorname.setText(kunde.getVorname());
+		txtNachname.setText(kunde.getNachname());
+		txtEmail.setText(kunde.getEmail());
+		txtTelefon.setText(kunde.getTelefonnummer());
+		txtHausnummer.setText(""+kunde.getHausnummer());
     }
     
     private void legeKundenAn(){
-         Kunde kunde = null;
+         Kunde kunde = new Kunde();
+		 if(cmbKundeDropdown.getValue() != 0) {
+			 return;
+		 }
+		 kunde.setVorname(txtVorname.getText());
+		 kunde.setNachname(txtNachname.getText());
+		 kunde.setEmail(txtEmail.getText());
+		 kunde.setTelefonnummer(txtTelefon.getText());
+		 kunde.setHausnummer(Integer.parseInt(txtHausnummer.getText()));
          // Objekt kunde fuellen
          kundeControl.speichereKunden(kunde);
+		 //reset machen:
+		txtVorname.setText("");
+		txtNachname.setText("");
+		txtEmail.setText("");
+		txtTelefon.setText("");
+		txtHausnummer.setText("");
+		cmbKundeDropdown.setItems(this.kundeModel.getKundenNummern());
    	}
     
   	private void aendereKunden(){
+		if(cmbKundeDropdown.getValue() == 0) {
+			return;
+		}
+		Kunde kunde = new Kunde();
+		kunde.setVorname(txtVorname.getText());
+		kunde.setNachname(txtNachname.getText());
+		kunde.setEmail(txtEmail.getText());
+		kunde.setTelefonnummer(txtTelefon.getText());
+		kunde.setHausnummer(Integer.parseInt(txtHausnummer.getText()));
+		kundeControl.aendereKunden(kunde, cmbKundeDropdown.getValue());
    	}
-  	
-   	private void loescheKunden(){
-   	}
+
+	   private void loescheKunden() {
+		   kundeControl.loescheKunden(cmbKundeDropdown.getValue());
+		   cmbKundeDropdown.setItems(this.kundeModel.getKundenNummern());
+		   txtVorname.setText("");
+		   txtNachname.setText("");
+		   txtEmail.setText("");
+		   txtTelefon.setText("");
+		   txtHausnummer.setText("");
+	   }
    	
    /** zeigt ein Fehlermeldungsfenster an
     * @param ueberschrift, Ueberschrift fuer das Fehlermeldungsfenster

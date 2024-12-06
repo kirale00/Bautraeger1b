@@ -68,7 +68,7 @@ public class DatabaseHelper {
     }
 
     public Connection getConnection() throws SQLException {
-        String url = "jdbc:mysql://" + db_host + ":" + db_port + "/" + db_database;
+        String url = "jdbc:mysql://" + db_host + ":" + db_port + "/" + db_database + "?useUnicode=true&characterEncoding=utf8";
         return DriverManager.getConnection(url, getDbUser(), getDbPassword());
     }
 }
