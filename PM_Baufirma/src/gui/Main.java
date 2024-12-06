@@ -1,6 +1,5 @@
 package gui;
 
-import controller.DatabaseHelper;
 import gui.kunde.KundeControl;
 
 import javafx.application.Application;
