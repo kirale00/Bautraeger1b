@@ -14,7 +14,7 @@ import javafx.collections.*;
 public final class KundeModel {
 	
 	// enthaelt den aktuellen Kunden
-	private Kunde kunde;
+    public Kunde kunde;
 	
 	/* enthaelt die Plannummern der Haeuser, diese muessen vielleicht noch
 	   in eine andere Klasse verschoben werden */
@@ -27,7 +27,7 @@ public final class KundeModel {
 	private static KundeModel kundeModel;
 	
 	// privater Konstruktor zur Realisierung des Singleton-Pattern
-	private KundeModel(){
+    public KundeModel(){
 		super();
 	}
 	
