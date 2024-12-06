@@ -93,6 +93,9 @@ MYSQL_PASSWORD=password
 ```
 **Achtung:**  Diese Datei sollte nicht ins Repository hochgeladen werden. Die Daten sind aber dennoch richtig, weil isso.
 
+**INFO**: Man sollte die `.env` ins Verzeichnis `PM_Baufirma` tun, nicht ins Unterverzeichnis wie `src` o.ä.,
+sonst wirtet nicht vom DatabaseHelper erkannt. (Die Datei dient sowohl als Config für Docker, als auch für Java zum
+aufbauen der DB Connection).
 
 ---
 
