@@ -158,7 +158,7 @@ public class KundeView{
 			txtHausnummer.setText("");
 			return;
 		}
-		var kunde = this.kundeModel.getKundeByNummer(kundennummer);
+		Kunde kunde = this.kundeModel.getKundeByNummer(kundennummer);
 		txtVorname.setText(kunde.getVorname());
 		txtNachname.setText(kunde.getNachname());
 		txtEmail.setText(kunde.getEmail());

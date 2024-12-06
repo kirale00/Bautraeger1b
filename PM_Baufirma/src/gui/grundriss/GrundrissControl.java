@@ -2,6 +2,8 @@ package gui.grundriss;
 
 import business.kunde.KundeModel;
 import business.sonderwunsch.SonderwunschModel;
+import javafx.scene.control.Alert;
+import javafx.scene.control.Alert.AlertType;
 import javafx.stage.Modality;
 import javafx.stage.Stage;
 
@@ -38,6 +40,22 @@ public final class GrundrissControl {
     } 
 	
 	public boolean pruefeKonstellationSonderwuensche(int[] ausgewaehlteSw){
+		if(ausgewaehlteSw[1]==1 && ausgewaehlteSw[0]==0) {
+			Alert alert = new Alert(AlertType.ERROR);
+	        alert.setTitle("Fehler");
+	        alert.setHeaderText(null);  // Keine Kopfzeile
+	        alert.setContentText("Für die Tür muss vorher eine Wand existieren!");
+	        alert.showAndWait();
+	        return false;
+		}
+		else if(ausgewaehlteSw[4]==1 && ausgewaehlteSw[5]==1) {
+			Alert alert = new Alert(AlertType.ERROR);
+	        alert.setTitle("Fehler");
+	        alert.setHeaderText(null);  // Keine Kopfzeile
+	        alert.setContentText("Es darf entweder nur eine Vorrichtung eines Bades im DG oder eine Ausführung eines Bades im DG geben!");
+	        alert.showAndWait();
+	        return false;
+		}
 		return true;
 	}
 

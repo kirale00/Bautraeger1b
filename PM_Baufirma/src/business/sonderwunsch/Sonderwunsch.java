@@ -4,6 +4,7 @@ public class Sonderwunsch {
 	
 	private int preis;
 	private String name;
+	private int kategorieId;
 	
 	public Sonderwunsch(String name, int preis) {
 		this.name = name;

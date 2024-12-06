@@ -35,13 +35,15 @@ public class SonderwunschModel {
 	
 	/*private ArrayList<Sonderwunsch> fetchSonderwuensche() { // durch datenbankzugriff ersetzen, sobald DB fertig
 		ArrayList<Sonderwunsch> swArr = new ArrayList<Sonderwunsch>();
-		swArr.add(new Sonderwunsch("Wand zur Abtrennung der Küche von dem Essbereich", 300));
-		swArr.add(new Sonderwunsch("Tür in der Wand zwischen Küche und Essbereich", 300));
-		swArr.add(new Sonderwunsch("Großes Zimmer im OG statt zwei kleinen Zimmern", 0));
-		swArr.add(new Sonderwunsch("Abgetrennter Treppenraum im DG", 890));
-		swArr.add(new Sonderwunsch("Vorrichtung eines Bades im DG", 990));
-		swArr.add(new Sonderwunsch("Ausführung eines Bades im DG", 8990));
+		final int KATEGORIEID=1;
+		swArr.add(new Sonderwunsch("Wand zur Abtrennung der Küche von dem Essbereich", 300,KATEGORIEID));
+		swArr.add(new Sonderwunsch("Tür in der Wand zwischen Küche und Essbereich", 300,KATEGORIEID));
+		swArr.add(new Sonderwunsch("Großes Zimmer im OG statt zwei kleinen Zimmern", 0,KATEGORIEID));
+		swArr.add(new Sonderwunsch("Abgetrennter Treppenraum im DG", 890,KATEGORIEID));
+		swArr.add(new Sonderwunsch("Vorrichtung eines Bades im DG", 990,KATEGORIEID));
+		swArr.add(new Sonderwunsch("Ausführung eines Bades im DG", 8990,KATEGORIEID));
 		
+
 		return swArr;
 		
 	}*/
