@@ -43,6 +43,8 @@ public class DatabaseHelper {
                 case "MYSQL_DATABASE":
                     db_database = value;
                     break;
+                case "MYSQL_ROOT_PASSWORD":
+                    break;
                 default:
                     System.out.println("Unbekannter Schlüssel: " + key);
             }
