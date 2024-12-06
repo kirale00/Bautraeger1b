@@ -93,6 +93,16 @@ public class InnentuerenView extends BasisView{
   	protected void berechneUndZeigePreisSonderwuensche(){
   		// Es wird erst die Methode pruefeKonstellationSonderwuensche(int[] ausgewaehlteSw)
   		// aus dem Control aufgerufen, dann der Preis berechnet.
+        gesamtpreis += Integer.parseInt(txfAnzahl1.getText())* 460;
+        
+
+        
+        gesamtpreis += Integer.parseInt(txfAnzahl2.getText()) * 560;
+    
+
+	    if (this.cb.isSelected()){
+	        gesamtpreis += 660;
+	    }
   	}
   	
    	/* speichert die ausgesuchten Sonderwuensche in der Datenbank ab */

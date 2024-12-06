@@ -96,6 +96,19 @@ public class HeizungenView extends BasisView{
   	protected void speichereSonderwuensche(){
  		// Es wird erst die Methode pruefeKonstellationSonderwuensche(int[] ausgewaehlteSw)
   		// aus dem Control aufgerufen, dann die Sonderwuensche gespeichert.
+  		
+  		int gesamtpreis=0;
+  		
+        gesamtpreis += Integer.parseInt(zusHeizkoerper.getText())* 660;
+        gesamtpreis += Integer.parseInt(glattHeizkoerper.getText()) * 160;
+        gesamtpreis += Integer.parseInt(handtuch.getText()) * 660;
+        
+
+	    if (this.chckFußbodenheizungDg.isSelected()){
+	        gesamtpreis += 9990;
+	    }else {
+	    	gesamtpreis += 9990;
+	    } 
   	}
 
 }
