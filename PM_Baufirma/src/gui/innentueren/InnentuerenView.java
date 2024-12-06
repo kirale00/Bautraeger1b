@@ -12,11 +12,14 @@ public class InnentuerenView extends BasisView{
 	private InnentuerenControl innentuerenControl;
    
     //---Anfang Attribute der grafischen Oberflaeche---
-    private Label lblWandKueche    	     
+    private Label lblText   	     
         = new Label("Innentueren-Variante");
-    private TextField txtPreisWandKueche 	= new TextField();
-    private Label lblWandKuecheEuro 		= new Label("Euro");
-    private CheckBox chckBxWandKueche 		= new CheckBox();
+    
+    private TextField txfAnzahl1= new TextField();
+    private int anzahl1=0;
+    private TextField txfAnzahl2= new TextField();
+    private int anzahl2 = 0;
+    private CheckBox cb= new CheckBox();
     //-------Ende Attribute der grafischen Oberflaeche-------
   
     /**
@@ -28,7 +31,7 @@ public class InnentuerenView extends BasisView{
     public InnentuerenView (InnentuerenControl innentuerenControl, Stage innentuerenStage){
     	super(innentuerenStage);
         this.innentuerenControl = innentuerenControl;
-        innentuerenStage.setTitle("Sonderw�nsche zu Innentuer-Varianten");
+        innentuerenStage.setTitle("Sonderwuensche zu Innentuer-Varianten");
                 
 	    this.initKomponenten();
 	    this.leseInnentuerenSonderwuensche();
@@ -37,12 +40,42 @@ public class InnentuerenView extends BasisView{
     /* initialisiert die Steuerelemente auf der Maske */
     protected void initKomponenten(){
     	super.initKomponenten(); 
-       	super.getLblSonderwunsch().setText("Innentueren-Varianten");
-       	super.getGridPaneSonderwunsch().add(lblWandKueche, 0, 1);
-    	super.getGridPaneSonderwunsch().add(txtPreisWandKueche, 1, 1);
-    	txtPreisWandKueche.setEditable(false);
-    	super.getGridPaneSonderwunsch().add(lblWandKuecheEuro, 2, 1);
-    	super.getGridPaneSonderwunsch().add(chckBxWandKueche, 3, 1);
+       	//super.getLblSonderwunsch().setText("Innentueren-Varianten");
+       	//super.getGridPaneSonderwunsch().add(lblText, 0, 1);
+    
+       
+
+        Label lblText1 = new Label("Klarglas Tür");
+        Label lblPreis1 = new Label("460" + " € je Tür");
+        this.txfAnzahl1 = new TextField();
+        this.txfAnzahl1.setEditable(true);
+        this.txfAnzahl1.setPromptText("Anzahl");
+        Label lblStk1 = new Label("Stk");
+
+        super.getGridPaneSonderwunsch().add(lblText1, 0, 1);
+        super.getGridPaneSonderwunsch().add(lblPreis1, 1, 1);
+        super.getGridPaneSonderwunsch().add(this.txfAnzahl1, 2, 1);
+        super.getGridPaneSonderwunsch().add(lblStk1, 3, 1);
+
+        Label lblText2 = new Label("Milchglas Tür");
+        Label lblPreis2 = new Label("560" + " € je Tür");
+        this.txfAnzahl2 = new TextField();
+        this.txfAnzahl2.setEditable(true);
+        this.txfAnzahl2.setPromptText("Anzahl");
+        Label lblStk2 = new Label("Stk");
+
+        super.getGridPaneSonderwunsch().add(lblText2, 0, 2);
+        super.getGridPaneSonderwunsch().add(lblPreis2, 1, 2);
+        super.getGridPaneSonderwunsch().add(this.txfAnzahl2, 2, 2);
+        super.getGridPaneSonderwunsch().add(lblStk2, 3, 2);
+        
+        Label lblText3 = new Label("Innentür zur Garage als Holztür? ");
+        
+        this.cb.setSelected(false);
+
+        super.getGridPaneSonderwunsch().add(lblText3, 0, 3);
+
+        super.getGridPaneSonderwunsch().add(this.cb, 2, 3);
     }  
     
     /**

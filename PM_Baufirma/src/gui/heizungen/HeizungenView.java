@@ -15,9 +15,24 @@ public class HeizungenView extends BasisView{
     //---Anfang Attribute der grafischen Oberflaeche---
     private Label lblWandKueche    	     
         = new Label("Heizungs-Variante");
-    private TextField txtPreisWandKueche 	= new TextField();
-    private Label lblWandKuecheEuro 		= new Label("Euro");
-    private CheckBox chckBxWandKueche 		= new CheckBox();
+    
+    private Label lblZusHeizkoerper= new Label("zusätzlichen Standard Heizkörper");
+    private Label lblzusHeizkoerperEuro 		= new Label("660,- Euro je Stück");
+    private TextField zusHeizkoerper 	= new TextField();
+    
+    private Label lblglattHeizkoerper		= new Label("Heizkörper mit glatter Oberfläche");
+    private Label lblglattHeizkoerperEuro 		= new Label("160,- Euro je Stück ");
+    private TextField glattHeizkoerper 	= new TextField();
+    
+    
+    private Label lblHandtuchHeizkoerper		= new Label("Handtuchheizkörper");
+    private Label lblhandtuchEuro 		= new Label("660,- Euro je Stück  ");
+    private TextField handtuch 	= new TextField();
+    
+    private Label lblFussbodenheizung		= new Label("Fußbodenheizung DG");
+    private Label lblFussbodenheizungEuro 		= new Label("ohne 8.900€; mit 9990€");
+    
+    private CheckBox chckFußbodenheizungDg		= new CheckBox();
     //-------Ende Attribute der grafischen Oberflaeche-------
   
     /**
@@ -39,11 +54,25 @@ public class HeizungenView extends BasisView{
     protected void initKomponenten(){
     	super.initKomponenten(); 
        	super.getLblSonderwunsch().setText("Heizungs-Varianten");
-       	super.getGridPaneSonderwunsch().add(lblWandKueche, 0, 1);
-    	super.getGridPaneSonderwunsch().add(txtPreisWandKueche, 1, 1);
-    	txtPreisWandKueche.setEditable(false);
-    	super.getGridPaneSonderwunsch().add(lblWandKuecheEuro, 2, 1);
-    	super.getGridPaneSonderwunsch().add(chckBxWandKueche, 3, 1);
+       	
+       
+        super.getGridPaneSonderwunsch().add(lblZusHeizkoerper, 0, 1);
+        super.getGridPaneSonderwunsch().add(lblzusHeizkoerperEuro, 1, 1);
+        super.getGridPaneSonderwunsch().add(zusHeizkoerper, 2, 1);
+        
+        super.getGridPaneSonderwunsch().add(lblglattHeizkoerper, 0, 2);
+        super.getGridPaneSonderwunsch().add(lblglattHeizkoerperEuro, 1, 2);
+        super.getGridPaneSonderwunsch().add(this.glattHeizkoerper, 2, 2);
+        
+        super.getGridPaneSonderwunsch().add(lblHandtuchHeizkoerper, 0, 3);
+        super.getGridPaneSonderwunsch().add(lblhandtuchEuro, 1, 3);
+        super.getGridPaneSonderwunsch().add(this.handtuch, 2, 3);
+        
+        
+        super.getGridPaneSonderwunsch().add(lblFussbodenheizung, 0, 4);
+        super.getGridPaneSonderwunsch().add(lblFussbodenheizungEuro, 1, 4);
+        super.getGridPaneSonderwunsch().add(this.chckFußbodenheizungDg, 2, 4);
+        
     }  
     
     /**
