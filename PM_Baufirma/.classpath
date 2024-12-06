@@ -18,5 +18,6 @@
 	</classpathentry>
 	<classpathentry kind="con" path="org.eclipse.jdt.USER_LIBRARY/JavaFX"/>
 	<classpathentry kind="con" path="org.eclipse.jdt.USER_LIBRARY/JavaFX21"/>
+	<classpathentry kind="lib" path="/home/malte/Downloads/mysql-connector-j_9.1.0-1ubuntu24.04_all/usr/share/java/mysql-connector-java-9.1.0.jar"/>
 	<classpathentry kind="output" path="bin"/>
 </classpath>
