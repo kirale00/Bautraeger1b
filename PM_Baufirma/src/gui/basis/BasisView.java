@@ -83,6 +83,11 @@ public abstract class BasisView {
   	
    	/* speichert die ausgesuchten Sonderwuensche in der Datenbank ab */
   	protected abstract void speichereSonderwuensche();
+
+	public Labeled getLblGesamtPreis() {
+		// TODO Auto-generated method stub
+		return null;
+	}
   	
  	
 }

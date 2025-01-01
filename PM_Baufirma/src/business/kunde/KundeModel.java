@@ -67,5 +67,9 @@ public final class KundeModel {
 	    throws SQLException, Exception{
         // Speicherung des Kunden in der DB
    	    this.kunde = kunde;
+	}
+
+	public Kunde getKunde() {
+		return kunde;
 	}  
 }

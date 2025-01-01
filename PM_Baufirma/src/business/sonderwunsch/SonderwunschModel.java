@@ -13,7 +13,7 @@ public class SonderwunschModel {
 	
 	private static SonderwunschModel sonderwunschModel;
 	
-	private SonderwunschModel(){
+	public SonderwunschModel(){
 		super();
 		this.setSonderwuensche(fetchSonderwuensche());
 	}
