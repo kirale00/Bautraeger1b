@@ -1,7 +1,7 @@
 package gui.kunde;
 
 import business.kunde.*;
-
+import gui.aussenanlagen.AussenanlagenControl;
 import javafx.geometry.*;
 import javafx.scene.Scene;
 import javafx.scene.control.*;
@@ -21,6 +21,8 @@ public class KundeView{
 	private KundeControl kundeControl;
 	// das Model-Objekt des Grundfensters mit den Kundendaten
 	private KundeModel kundeModel;
+
+	private AussenanlagenControl aussenanlagenControl;
 
     //---Anfang Attribute der grafischen Oberflaeche---
 	private BorderPane borderPane 		= new BorderPane();
@@ -48,6 +50,7 @@ public class KundeView{
     private MenuItem mnItmGrundriss  	= new MenuItem("Grundrissvarianten");
     private MenuItem fensterMenuItem  	= new MenuItem("Fenster/Außentüren");
 	private MenuItem parkettMenuItem  	= new MenuItem("Parkett");
+	private MenuItem aussenanlagenMenuItem  	= new MenuItem("Außenanlagen");
     //-------Ende Attribute der grafischen Oberflaeche-------
   
     /**
@@ -116,6 +119,8 @@ public class KundeView{
 	    mnSonderwuensche.getItems().add(mnItmGrundriss);
 	    mnSonderwuensche.getItems().add(fensterMenuItem);
 		mnSonderwuensche.getItems().add(parkettMenuItem);
+		mnSonderwuensche.getItems().add(aussenanlagenMenuItem);
+
     }
 
     /* initialisiert die Listener zu den Steuerelementen auf de Maske */
@@ -141,7 +146,10 @@ public class KundeView{
 	    });
 		parkettMenuItem.setOnAction(aEvent-> {
 			kundeControl.oeffneParkettControl(); 
-	   });
+		});
+		aussenanlagenMenuItem.setOnAction(aEvent-> {
+			kundeControl.oeffneAussenanlagenControl(); 
+		});
     }
     
     private void holeInfoDachgeschoss(){ 
