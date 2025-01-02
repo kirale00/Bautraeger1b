@@ -6,6 +6,7 @@ import business.kunde.Kunde;
 import business.kunde.KundeModel;
 import gui.grundriss.GrundrissControl;
 import gui.parkett.ParkettControl;
+import gui.aussenanlagen.AussenanlagenControl;
 import gui.fenster.FensterControl;
 import javafx.stage.Stage;
 
@@ -23,6 +24,7 @@ public class KundeControl {
     private GrundrissControl grundrissControl;
     private FensterControl fensterControl;
 	private ParkettControl parkettControl;
+	private AussenanlagenControl aussenanlagenControl;
 
     /**
 	 * erzeugt ein ControlObjekt inklusive View-Objekt und Model-Objekt zum 
@@ -55,6 +57,12 @@ public class KundeControl {
     		this.parkettControl = new ParkettControl(kundeModel);
       	}
     	this.parkettControl.oeffneParkettView();
+    }
+	public void oeffneAussenanlagenControl(){
+    	if (this.aussenanlagenControl == null){
+    		this.aussenanlagenControl = new AussenanlagenControl(kundeModel);
+      	}
+    	this.aussenanlagenControl.oeffneAussenanlagenView();
     }
 
 	/**
