@@ -1,0 +1,87 @@
+package gui.grundriss;
+
+
+
+import business.kunde.KundeModel;
+import business.sonderwunsch.SonderwunschModel;
+import javafx.scene.control.Alert;
+import javafx.scene.control.Alert.AlertType;
+import javafx.stage.Modality;
+import javafx.stage.Stage;
+
+/**
+ * Klasse, welche das Fenster mit den Sonderwuenschen zu den Grundriss-Varianten
+ * kontrolliert.
+ */
+public final class GrundrissControl {
+	
+	// das View-Objekt des Grundriss-Fensters
+	private GrundrissView grundrissView;
+	private SonderwunschModel sonderwunschModel;
+	
+	/**
+	 * erzeugt ein ControlObjekt inklusive View-Objekt und Model-Objekt zum 
+	 * Fenster fuer die Sonderwuensche zum Grundriss.
+	 * @param grundrissStage, Stage fuer das View-Objekt zu den Sonderwuenschen zum Grundriss
+	 */
+	public GrundrissControl(KundeModel kundeModel){  
+		this.sonderwunschModel = SonderwunschModel.getInstance();
+	   	Stage stageGrundriss = new Stage();
+    	stageGrundriss.initModality(Modality.APPLICATION_MODAL);
+    	this.grundrissView = new GrundrissView(this, stageGrundriss, sonderwunschModel.getSonderwuensche());
+	}
+	    
+	/**
+	 * macht das GrundrissView-Objekt sichtbar.
+	 */
+	public void oeffneGrundrissView(){ 
+		this.grundrissView.oeffneGrundrissView();
+	}
+
+	public void leseGrundrissSonderwuensche(){
+    } 
+	
+	public boolean pruefeKonstellationSonderwuensche(int[] ausgewaehlteSw){
+		if(ausgewaehlteSw[1]==1 && ausgewaehlteSw[0]==0) {
+			Alert alert = new Alert(AlertType.ERROR);
+	        alert.setTitle("Fehler");
+	        alert.setHeaderText(null);  // Keine Kopfzeile
+	        alert.setContentText("Für die Tür muss vorher eine Wand existieren!");
+	        alert.showAndWait();
+	        return false;
+		}
+		else if(ausgewaehlteSw[4]==1 && ausgewaehlteSw[5]==1) {
+			Alert alert = new Alert(AlertType.ERROR);
+	        alert.setTitle("Fehler");
+	        alert.setHeaderText(null);  // Keine Kopfzeile
+	        alert.setContentText("Es darf entweder nur eine Vorrichtung eines Bades im DG oder eine Ausführung eines Bades im DG geben!");
+	        alert.showAndWait();
+	        return false;
+		}
+		// else if(ausgewaehlteSw[4]==1 || ausgewaehlteSw[5]==1) {
+		// 	try {
+		// 		Connection connection = new DatabaseHelper().getConnection();
+		// 		Statement stmt = connection.createStatement();
+		// 		ResultSet rs=stmt.executeQuery("SELECT COUNT(*) 
+		// 										FROM Kundenwunsch kw
+		// 										INNER JOIN Kunde k ON kw.fk_kunde = k.id
+		// 										INNER JOIN Sonderwunsch s ON kw.fk_sonderwunsch = s.id
+		// 										WHERE k.id = ? AND s.beschreibung = ?;");
+		// 		while(rs.next()) {
+					
+		// 		}
+		// 	} catch (SQLException e) {
+		// 		e.printStackTrace();
+		// 	}
+		// }
+		return true;
+	}
+
+	public SonderwunschModel getSonderwunschModel() {
+		return sonderwunschModel;
+	}
+
+	public void setSonderwunschModel(SonderwunschModel sonderwunschModel) {
+		this.sonderwunschModel = sonderwunschModel;
+	}
+}
