@@ -77,8 +77,12 @@ public final class KundeModel {
 			System.out.println(resultArray);
 			return (ObservableList<Integer>) resultArray;
         } catch (SQLException e) {
+
             //throw new RuntimeException(e);
 			return null;
+
+            //throw new RuntimeException(e);
+
         }
 	}
 

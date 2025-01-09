@@ -1,11 +1,15 @@
 package gui.grundriss;
 
+import java.io.BufferedWriter;
+import java.io.FileWriter;
+import java.io.IOException;
 import java.sql.Connection;
+
 import java.sql.PreparedStatement;
 import java.sql.SQLIntegrityConstraintViolationException;
 import java.util.ArrayList;
 
-
+import business.kunde.Kunde;
 import business.sonderwunsch.Sonderwunsch;
 import business.sonderwunsch.SonderwunschModel;
 import controller.DatabaseHelper;
@@ -157,7 +161,7 @@ public class GrundrissView extends BasisView{
 							
 				}	
 				System.out.println("Die Sonderwünsche wurden erfolgreich gespeichert.");
-				schliesseBasisView();
+				//schliesseBasisView();
 			}
 			catch (SQLIntegrityConstraintViolationException e) {
                 Alert alert = new Alert(AlertType.ERROR);
@@ -178,4 +182,31 @@ public class GrundrissView extends BasisView{
   	}
   	
  	
- }
+ 
+
+
+	protected void exportiereSonderwünsche(int[] sonderwuenscheArr, Kunde kunde ){
+        
+        try { 
+            String dateiName = kunde.getHausnummer() + "_" + kunde.getNachname() +  "_Grundrisse" + ".csv";
+            FileWriter writer = new FileWriter(dateiName); 
+            BufferedWriter bwr = new BufferedWriter(writer); 
+            bwr.write("CSV Export für: " + kunde.getVorname() + " " + kunde.getNachname());
+            for(int i : sonderwuenscheArr) {
+                bwr.write(i); 
+                bwr.write(","); 
+            }
+
+
+            bwr.close(); 
+            System.out.println("Sonderwünsche exportiert in Datei: " + dateiName); 
+        } catch (IOException ioe) {
+             ioe.printStackTrace(); 
+        }
+
+
+     }
+
+	
+}
+

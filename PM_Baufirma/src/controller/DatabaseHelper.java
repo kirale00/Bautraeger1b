@@ -7,12 +7,19 @@ import java.sql.DriverManager;
 import java.sql.SQLException;
 
 public class DatabaseHelper {
-    /* Verbindungsdaten hier ergänzen, ggf. durch zB config ersetzen statt hardcoden */
+
+    /*
+     * Verbindungsdaten hier ergänzen, ggf. durch zB config ersetzen statt hardcoden
+     */
+
     private static String db_host = "localhost";
     private static String db_user = "";
     private static String db_password = "";
     private static String db_database = "";
     private static String db_port = "3306";
+
+
+
 
 
     public DatabaseHelper() {
@@ -33,6 +40,7 @@ public class DatabaseHelper {
 
             switch (key) {
                 case "MYSQL_USER":
+
                     db_user = "root";
                     break;
                 case "MYSQL_ROOT_PASSWORD":
@@ -40,10 +48,19 @@ public class DatabaseHelper {
                     break;
                 case "MYSQL_PASSWORD":
                     //db_password = value;
+
+                    db_user = value;
                     break;
+                //case "MYSQL_PASSWORD":
+                  //  db_password = value;
+
+                    //break;
                 case "MYSQL_DATABASE":
                     db_database = value;
                     break;
+
+                //case "MYSQL_ROOT_PASSWORD":
+                  //  break;
                 default:
                     System.out.println("Unbekannter Schlüssel: " + key);
             }
@@ -71,7 +88,10 @@ public class DatabaseHelper {
     }
 
     public Connection getConnection() throws SQLException {
-        String url = "jdbc:mysql://" + db_host + ":" + db_port + "/" + db_database + "?useUnicode=true&characterEncoding=utf8";
+
+        String url = "jdbc:mysql://" + db_host + ":" + db_port + "/" + db_database
+                + "?useUnicode=true&characterEncoding=utf8";
+
         return DriverManager.getConnection(url, getDbUser(), getDbPassword());
     }
 }

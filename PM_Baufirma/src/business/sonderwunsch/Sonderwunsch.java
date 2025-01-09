@@ -36,6 +36,20 @@ public class Sonderwunsch {
 	public void setBeschreibung(String beschreibung) {
 		this.beschreibung = beschreibung;
 	}
+	private String name;
+	
+	public Sonderwunsch(String name, int preis) {
+		this.name = name;
+		this.preis = preis;
+	}
+	
+	public String getName() {
+		return name;
+	}
+	public void setName(String name) {
+		this.name = name;
+
+	}
 	public int getPreis() {
 		return preis;
 	}

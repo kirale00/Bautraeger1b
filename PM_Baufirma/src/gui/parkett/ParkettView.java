@@ -7,10 +7,14 @@ import gui.basis.BasisView;
 import javafx.scene.control.*;
 import javafx.stage.Stage;
 
+
 public class ParkettView extends BasisView{
  
 	private ParkettControl parkettControl;
-  
+	private ArrayList<Sonderwunsch> swListe;
+	private ArrayList<CheckBox> checkBoxList = new ArrayList<>();
+	private TextField gesamtPreisTextField;
+	private int gesamtPreis = 0;
 
     public ParkettView (ParkettControl parkettControl, Stage parkettStage, ArrayList<Sonderwunsch> swListe){
     	super(parkettStage);
@@ -60,10 +64,7 @@ public class ParkettView extends BasisView{
     }
     
  	/* berechnet den Preis der ausgesuchten Sonderwuensche und zeigt diesen an */
-  	protected void berechneUndZeigePreisSonderwuensche(){
-  		// Es wird erst die Methode pruefeKonstellationSonderwuensche(int[] ausgewaehlteSw)
-  		// aus dem Control aufgerufen, dann der Preis berechnet.
-  	}
+  
   	
    	/* speichert die ausgesuchten Sonderwuensche in der Datenbank ab */
   	protected void speichereSonderwuensche(){
@@ -72,6 +73,51 @@ public class ParkettView extends BasisView{
   	}
   	
  	
- }
+ 
 
+
+
+
+
+
+	
+
+	
+
+
+
+	
+
+	
+
+	private int[] fuelleSwListe() {
+		int[] ausgewaehlteSw = new int[swListe.size()];
+		for (int i = 0; i < swListe.size(); i++) {
+			if (checkBoxList.get(i).isSelected()) {
+				ausgewaehlteSw[i] = 1;
+			} else {
+				ausgewaehlteSw[i] = 0;
+			}
+
+		}
+		return ausgewaehlteSw;
+	}
+
+	protected void berechneUndZeigePreisSonderwuensche() {
+		int[] ausgewaehlteSw = fuelleSwListe();
+
+		Boolean berechnePreis = this.parkettControl.pruefeKonstellationSonderwuensche(ausgewaehlteSw);
+		if (berechnePreis) {
+			for (int i = 0; i < swListe.size(); i++) {
+				if (checkBoxList.get(i).isSelected()) {
+					gesamtPreis += swListe.get(i).getPreis();
+				}
+			}
+			gesamtPreisTextField.setText(Integer.toString(gesamtPreis));
+			gesamtPreis = 0;
+		}
+	}
+
+
+}
 

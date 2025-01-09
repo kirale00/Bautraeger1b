@@ -1,3 +1,4 @@
+
 package gui.innentueren;
 
 import java.sql.Connection;
@@ -11,6 +12,11 @@ import business.sonderwunsch.SonderwunschModel;
 import controller.DatabaseHelper;
 import gui.basis.BasisView;
 import gui.kunde.KundeView;
+
+
+import gui.basis.BasisView;
+import gui.grundriss.GrundrissControl;
+
 import javafx.scene.control.CheckBox;
 import javafx.scene.control.Label;
 import javafx.scene.control.TextField;
@@ -19,6 +25,7 @@ import javafx.stage.Stage;
 public class InnentuerenView extends BasisView{
  	// das Control-Objekt des Grundriss-Fensters
 	private InnentuerenControl innentuerenControl;
+
     private SonderwunschModel swModel = SonderwunschModel.getInstance();
 	private ArrayList<Sonderwunsch> swListe;
 	private ArrayList<CheckBox> checkBoxList = new ArrayList<>(); 
@@ -26,6 +33,7 @@ public class InnentuerenView extends BasisView{
     private int gesamtPreis=0;
 
   
+
   
     /**
      * erzeugt ein GrundrissView-Objekt, belegt das zugehoerige Control
@@ -33,6 +41,7 @@ public class InnentuerenView extends BasisView{
      * @param grundrissControl GrundrissControl, enthaelt das zugehoerige Control
      * @param grundrissStage Stage, enthaelt das Stage-Objekt fuer diese View
      */
+
     public InnentuerenView (InnentuerenControl innentuerenControl, Stage innentuerenStage,ArrayList<Sonderwunsch> swListe){
     	super(innentuerenStage);
         this.innentuerenControl = innentuerenControl;
@@ -40,10 +49,12 @@ public class InnentuerenView extends BasisView{
         this.swListe=new ArrayList<Sonderwunsch>(swListe.subList(15, 18));        
 
 	    this.initKomponenten(swListe);
+
 	    this.leseInnentuerenSonderwuensche();
     }
   
     /* initialisiert die Steuerelemente auf der Maske */
+
     protected void initKomponenten(ArrayList<Sonderwunsch> swListe){
     	super.initKomponenten(); 
        	super.getLblSonderwunsch().setText("Innentüren-Varianten");
@@ -76,7 +87,8 @@ public class InnentuerenView extends BasisView{
         super.getGridPaneSonderwunsch().add(gesamtpreisLabel, 2, offset);
        	
 
-    }  
+
+	}
     
     /**
 	 * macht das GrundrissView-Objekt sichtbar.
@@ -88,6 +100,7 @@ public class InnentuerenView extends BasisView{
     private void leseInnentuerenSonderwuensche(){
     	this.innentuerenControl.leseInnentuerenSonderwuensche();
     }
+
     private int[] fuelleSwListe() {
     	int[] ausgewaehlteSw= new int[swListe.size()];
     	for (int i = 0; i < swListe.size(); i++) {
@@ -117,12 +130,14 @@ public class InnentuerenView extends BasisView{
   	  	    gesamtPreisTextField.setText(Integer.toString(gesamtPreis));
   	  	    gesamtPreis=0;
   		}
+
   	}
   	
    	/* speichert die ausgesuchten Sonderwuensche in der Datenbank ab */
   	protected void speichereSonderwuensche(){
  		// Es wird erst die Methode pruefeKonstellationSonderwuensche(int[] ausgewaehlteSw)
   		// aus dem Control aufgerufen, dann die Sonderwuensche gespeichert.
+
   	int[] ausgewaehlteSw = fuelleSwListe();
   		Boolean speichereSw = this.innentuerenControl.pruefeKonstellationSonderwuensche(ausgewaehlteSw);
   		
@@ -152,7 +167,7 @@ public class InnentuerenView extends BasisView{
 							
 				}	
 				System.out.println("Die Sonderwünsche wurden erfolgreich gespeichert.");
-				schliesseBasisView();
+				//schliesseBasisView();
 			}
             catch (SQLIntegrityConstraintViolationException e) {
                 try {
@@ -173,4 +188,8 @@ public class InnentuerenView extends BasisView{
   			
   		}
     }
+
+  	
+  	
+
 }

@@ -2,6 +2,8 @@ package gui.kunde;
 
 import business.kunde.*;
 
+import gui.aussenanlagen.AussenanlagenControl;
+
 import javafx.geometry.*;
 import javafx.scene.Scene;
 import javafx.scene.control.*;
@@ -11,15 +13,19 @@ import javafx.scene.text.*;
 import javafx.stage.Stage;
 
 
+import java.sql.SQLException;
+
+
 /**
  * Klasse, welche das Grundfenster mit den Kundendaten bereitstellt.
  */
 public class KundeView{
- 
+
 	// das Control-Objekt des Grundfensters mit den Kundendaten
 	private KundeControl kundeControl;
 	// das Model-Objekt des Grundfensters mit den Kundendaten
 	private KundeModel kundeModel;
+
 
     //---Anfang Attribute der grafischen Oberflaeche---
 	private BorderPane borderPane 		= new BorderPane();
@@ -31,6 +37,7 @@ public class KundeView{
 	public static ComboBox<Integer> cmbKundeDropdown = new ComboBox<Integer>();
     private Label lblVorname        = new Label("Vorname");
     private TextField txtVorname    = new TextField();
+
 	private Label lblNachname       = new Label("Nachname");
 	private TextField txtNachname   = new TextField();
 	private Label lblEmail         	= new Label("Email");
@@ -40,6 +47,7 @@ public class KundeView{
 	private Label lblHausnummer     = new Label("Hausnummer");
 	private TextField txtHausnummer = new TextField();
 	private Button btnAnlegen	 	  	= new Button("Anlegen");
+
     private Button btnAendern 	      	= new Button("Ändern");
     private Button btnLoeschen 	 		= new Button("Löschen");
     private MenuBar mnBar 			  	= new MenuBar();
@@ -49,6 +57,7 @@ public class KundeView{
 	private MenuItem parkettMenuItem  	= new MenuItem("Parkett");
     private MenuItem mnItmHeizungen 	= new MenuItem("Heizungsvarianten");
     private MenuItem mnItmInnentueren 	= new MenuItem("Innentuerenvarianten");
+	private MenuItem aussenanlagenMenuItem  	= new MenuItem("Außenanlagen");
     //-------Ende Attribute der grafischen Oberflaeche-------
   
     /**
@@ -86,6 +95,10 @@ public class KundeView{
 	    cmbBxNummerHaus.setMinSize(150,  25);
 	    cmbBxNummerHaus.setItems(this.kundeModel.getPlannummern());
 
+	
+	
+	
+
 		gridPane.add(lblKundeDropdown, 0, 4);
 		gridPane.add(cmbKundeDropdown, 1, 4);
 		cmbKundeDropdown.setItems(this.kundeModel.getKundenNummern());
@@ -94,8 +107,10 @@ public class KundeView{
 				this.leseKunde(newValue);
 			}
 		});
+
 	    gridPane.add(lblVorname, 0, 5);
 	    gridPane.add(txtVorname, 1, 5);
+
 		gridPane.add(lblNachname, 0, 7);
 		gridPane.add(txtNachname, 1, 7);
 		gridPane.add(lblEmail, 0, 9);
@@ -104,6 +119,7 @@ public class KundeView{
 		gridPane.add(txtTelefon, 1, 11);
 		gridPane.add(lblHausnummer, 0, 13);
 		gridPane.add(txtHausnummer, 1, 13);
+
 	    // Buttons
 	    gridPane.add(btnAnlegen, 0, 16);
 	    btnAnlegen.setMinSize(150,  25);
@@ -152,14 +168,46 @@ public class KundeView{
       	mnItmInnentueren.setOnAction(aEvent-> {
  	        kundeControl.oeffneInnentuerenControl(); 
 	    });
+		aussenanlagenMenuItem.setOnAction(aEvent-> {
+			//kundeControl.oeffneAussenanlagenControl();
+		});
     }
     
-    private void holeInfoDachgeschoss(){ 
-    }
+    
+   
+
+	
+    
+    // private void leseKunde(int kundennummer){
+
+	// 	// Buttons
+	// 	gridPane.add(btnAnlegen, 0, 16);
+	// 	btnAnlegen.setMinSize(150,  25);
+	// 	gridPane.add(btnAendern, 1, 16);
+	// 	btnAendern.setMinSize(150,  25);
+	// 	gridPane.add(btnLoeschen, 2, 16);
+	// 	btnLoeschen.setMinSize(150,  25);
+	// 	// MenuBar und Menu
+	// 	borderPane.setTop(mnBar);
+	// 	mnBar.getMenus().add(mnSonderwuensche);
+	// 	mnSonderwuensche.getItems().add(mnItmGrundriss);
+	// 	mnSonderwuensche.getItems().add(fensterMenuItem);
+	// 	mnSonderwuensche.getItems().add(parkettMenuItem);
+	// 	mnSonderwuensche.getItems().add(aussenanlagenMenuItem);
+	// 	mnSonderwuensche.getItems().add(innentuerenMenuItem);
+	// 	mnSonderwuensche.getItems().add(heizungenMenuItem);
+
+	// }
+
+	
+
+	private void holeInfoDachgeschoss(){
+	}
 
 	private void leseKunden(){}
-    
-    private void leseKunde(int kundennummer){
+
+	private void leseKunde(int kundennummer){
+
 		if(kundennummer == 0) {
 			txtVorname.setText("");
 			txtNachname.setText("");
@@ -174,6 +222,7 @@ public class KundeView{
 		txtEmail.setText(kunde.getEmail());
 		txtTelefon.setText(kunde.getTelefonnummer());
 		txtHausnummer.setText(""+kunde.getHausnummer());
+
     }
     
     private void legeKundenAn(){
@@ -189,15 +238,18 @@ public class KundeView{
          // Objekt kunde fuellen
          kundeControl.speichereKunden(kunde);
 		 //reset machen:
+
 		txtVorname.setText("");
 		txtNachname.setText("");
 		txtEmail.setText("");
 		txtTelefon.setText("");
 		txtHausnummer.setText("");
 		cmbKundeDropdown.setItems(this.kundeModel.getKundenNummern());
+
    	}
     
   	private void aendereKunden(){
+
 		if(cmbKundeDropdown.getValue() == 0) {
 			return;
 		}
@@ -208,6 +260,7 @@ public class KundeView{
 		kunde.setTelefonnummer(txtTelefon.getText());
 		kunde.setHausnummer(Integer.parseInt(txtHausnummer.getText()));
 		kundeControl.aendereKunden(kunde, cmbKundeDropdown.getValue());
+
    	}
 
 	   private void loescheKunden() {
@@ -231,6 +284,7 @@ public class KundeView{
         alert.setContentText(meldung);
         alert.show();
     }
+
 
 }
 

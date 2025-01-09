@@ -1,5 +1,6 @@
 package gui.heizungen;
 
+
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.SQLException;
@@ -13,6 +14,7 @@ import gui.basis.BasisView;
 import gui.kunde.KundeView;
 import javafx.scene.control.Alert;
 import javafx.scene.control.Alert.AlertType;
+
 import javafx.scene.control.CheckBox;
 import javafx.scene.control.Label;
 import javafx.scene.control.TextField;
@@ -22,11 +24,13 @@ public class HeizungenView extends BasisView{
 	
  	// das Control-Objekt des Grundriss-Fensters
 	private HeizungenControl heizungenControl;
+
     private SonderwunschModel swModel = SonderwunschModel.getInstance();
     private ArrayList<Sonderwunsch> swListe;
 	private ArrayList<CheckBox> checkBoxList = new ArrayList<>(); 
 	private TextField gesamtPreisTextField;
 	private int gesamtPreis=0;
+
   
     /**
      * erzeugt ein GrundrissView-Objekt, belegt das zugehoerige Control
@@ -34,6 +38,7 @@ public class HeizungenView extends BasisView{
      * @param grundrissControl GrundrissControl, enthaelt das zugehoerige Control
      * @param grundrissStage Stage, enthaelt das Stage-Objekt fuer diese View
      */
+
     public HeizungenView (HeizungenControl heizungenControl, Stage heizungenStage, ArrayList<Sonderwunsch> swListe){
     	super(heizungenStage);
         this.heizungenControl = heizungenControl;
@@ -42,10 +47,12 @@ public class HeizungenView extends BasisView{
 
                 
 	    this.initKomponenten(swListe);
+
 	    this.leseHeizungenSonderwuensche();
     }
   
     /* initialisiert die Steuerelemente auf der Maske */
+
     protected void initKomponenten(ArrayList<Sonderwunsch> swListe){
     	super.initKomponenten(); 
        	super.getLblSonderwunsch().setText("Heizungs-Varianten");
@@ -81,6 +88,7 @@ public class HeizungenView extends BasisView{
     }  
     
     /** 
+
 	 * macht das GrundrissView-Objekt sichtbar.
 	 */
 	public void oeffneHeizungenView(){ 
@@ -90,6 +98,7 @@ public class HeizungenView extends BasisView{
     private void leseHeizungenSonderwuensche(){
     	this.heizungenControl.leseHeizungenSonderwuensche();
     }
+
     private int[] fuelleSwListe() {
     	int[] ausgewaehlteSw= new int[swListe.size()];
     	for (int i = 0; i < swListe.size(); i++) {
@@ -102,10 +111,12 @@ public class HeizungenView extends BasisView{
   		}
     	return ausgewaehlteSw;
     }
+
  	/* berechnet den Preis der ausgesuchten Sonderwuensche und zeigt diesen an */
   	protected void berechneUndZeigePreisSonderwuensche(){
   		// Es wird erst die Methode pruefeKonstellationSonderwuensche(int[] ausgewaehlteSw)
   		// aus dem Control aufgerufen, dann der Preis berechnet.
+
           int[] ausgewaehlteSw = fuelleSwListe();
 
   		
@@ -119,12 +130,14 @@ public class HeizungenView extends BasisView{
   	  	    gesamtPreisTextField.setText(Integer.toString(gesamtPreis));
   	  	    gesamtPreis=0;
   		}
+
   	}
   	
    	/* speichert die ausgesuchten Sonderwuensche in der Datenbank ab */
   	protected void speichereSonderwuensche(){
  		// Es wird erst die Methode pruefeKonstellationSonderwuensche(int[] ausgewaehlteSw)
   		// aus dem Control aufgerufen, dann die Sonderwuensche gespeichert.
+
   		
   		int[] ausgewaehlteSw = fuelleSwListe();
   		Boolean speichereSw = this.heizungenControl.pruefeKonstellationSonderwuensche(ausgewaehlteSw);
@@ -157,7 +170,7 @@ public class HeizungenView extends BasisView{
 							
 				}	
 				System.out.println("Die Sonderwünsche wurden erfolgreich gespeichert.");
-				schliesseBasisView();
+				//schliesseBasisView();
 			}
 			 catch (SQLIntegrityConstraintViolationException e) {
 				if(merken==21 || merken==22) {
@@ -185,6 +198,7 @@ public class HeizungenView extends BasisView{
 			 
   			
   		}
+
   	}
 
 }

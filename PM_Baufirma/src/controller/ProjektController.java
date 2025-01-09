@@ -4,11 +4,14 @@ import business.kunde.Kunde;
 import java.util.ArrayList;
 
 public class ProjektController {
-    private DatabaseHelper DbConnection; //todo: das wir pro Controller instanz nur eine MySQL Verbindung brauchen
+
+    private DatabaseHelper DbConnection; // todo: das wir pro Controller instanz nur eine MySQL Verbindung brauchen
+
 
     public ProjektController() {
         this.DbConnection = new DatabaseHelper();
     }
+
 
     //CREATE: Kunde/Projekt erstellen:
     public void create(Kunde kundendaten) {
@@ -32,6 +35,7 @@ public class ProjektController {
     }
 
     //INDEX: Alle Kunden/Projekte zurückgeben:
+
     public ArrayList<Kunde> index() {
         return new ArrayList<Kunde>();
     }

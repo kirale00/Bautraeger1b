@@ -6,8 +6,12 @@ import business.kunde.Kunde;
 import business.kunde.KundeModel;
 import gui.grundriss.GrundrissControl;
 import gui.parkett.ParkettControl;
+
 import gui.heizungen.HeizungenControl;
 import gui.innentueren.InnentuerenControl;
+
+import gui.aussenanlagen.AussenanlagenControl;
+
 import gui.fenster.FensterControl;
 import javafx.stage.Stage;
 
@@ -15,6 +19,7 @@ import javafx.stage.Stage;
  * Klasse, welche das Grundfenster mit den Kundendaten kontrolliert.
  */
 public class KundeControl {
+
        
     // das View-Objekt des Grundfensters mit den Kundendaten
 	private KundeView kundeView;
@@ -28,6 +33,7 @@ public class KundeControl {
        zum Grundriss zu dem Kunden */
     private GrundrissControl grundrissControl;
   
+	private AussenanlagenControl aussenanlagenControl;
 
 	private FensterControl fensterControl;
 	private ParkettControl parkettControl;
@@ -81,10 +87,12 @@ public class KundeControl {
     	this.innentuerenControl.oeffneInnentuerenView();
     }
    
+
 	/**
 	 * speichert ein Kunde-Objekt in die Datenbank
 	 * @param kunde, Kunde-Objekt, welches zu speichern ist
 	 */
+
     public void speichereKunden(Kunde kunde){
       	try{
     		kundeModel.speichereKunden(kunde);
@@ -100,6 +108,7 @@ public class KundeControl {
                 "Unbekannter Fehler");
     	}
     }
+
 
 	public void aendereKunden(Kunde kunde, Integer kundennummer){
 		try{

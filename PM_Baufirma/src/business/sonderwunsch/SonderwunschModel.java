@@ -2,16 +2,25 @@ package business.sonderwunsch;
 
 import controller.DatabaseHelper;
 
+
 import java.util.ArrayList;
 
 import business.kunde.Kunde;
+
+
+import java.sql.SQLException;
+import java.util.ArrayList;
 
 import java.nio.charset.StandardCharsets;
 import java.sql.*;
 
 public class SonderwunschModel {
+
 	public Sonderwunsch sonderwunsch;
 	public Kunde kunde;
+
+	
+
 	private ArrayList<Sonderwunsch> sonderwuensche;
 	
 	private static SonderwunschModel sonderwunschModel;
@@ -36,6 +45,7 @@ public class SonderwunschModel {
 		this.sonderwuensche = sonderwuensche;
 	}
 	
+
 	/*private ArrayList<Sonderwunsch> fetchSonderwuensche() { // durch datenbankzugriff ersetzen, sobald DB fertig
 		ArrayList<Sonderwunsch> swArr = new ArrayList<Sonderwunsch>();
 		final int KATEGORIEID=1;
@@ -58,6 +68,11 @@ public class SonderwunschModel {
 		String user = "root";
 		String password = "rootpassword";*/
 		String query = "SELECT sonderwunschid, beschreibung, preis, anzahlverfuegbar FROM Sonderwunsch";
+
+	// //private ArrayList<Sonderwunsch> fetchSonderwuensche() {
+	// 	ArrayList<Sonderwunsch> swArr = new ArrayList<>();
+	// 	String query = "SELECT beschreibung, preis FROM Sonderwunsch";
+
 	
 		try (Connection conn = new DatabaseHelper().getConnection()) {
 			// Setze den Zeichensatz für die aktuelle Sitzung
@@ -74,9 +89,11 @@ public class SonderwunschModel {
 				while (rs.next()) {
 					String beschreibung = new String(rs.getBytes("beschreibung"), StandardCharsets.UTF_8);
 					double preis = rs.getDouble("preis");
+
 					int sonderwunschId = rs.getInt("sonderwunschid");
 					int anzahlVerfuegbar = rs.getInt("anzahlverfuegbar");
 					swArr.add(new Sonderwunsch( (int) preis,beschreibung, sonderwunschId, anzahlVerfuegbar));
+
 				}
 				System.out.println("Sonderwünsche erhalten.");
 			}
@@ -87,4 +104,8 @@ public class SonderwunschModel {
 	
 		return swArr;
 	}
+
+
+	
+
 }

@@ -1,0 +1,16 @@
+{
+    "java.project.referencedLibraries": [
+        "lib/**/*.jar",
+        "/home/malte/Musik/lib/mysql-connector-j-9.1.0.jar",
+        "/home/malte/Musik/lib/junit-jupiter-engine-5.11.4.jar",
+        "/home/malte/Musik/lib/junit-jupiter-api-5.11.4.jar",
+        "/home/malte/Musik/lib/javafx.web.jar",
+        "/home/malte/Musik/lib/javafx.swing.jar",
+        "/home/malte/Musik/lib/javafx.media.jar",
+        "/home/malte/Musik/lib/javafx.graphics.jar",
+        "/home/malte/Musik/lib/javafx.fxml.jar",
+        "/home/malte/Musik/lib/javafx.controls.jar",
+        "/home/malte/Musik/lib/javafx.base.jar",
+        "/home/malte/Musik/lib/javafx-swt.jar"
+    ]
+}

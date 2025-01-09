@@ -1,6 +1,7 @@
 package gui.heizungen;
 
 import business.kunde.KundeModel;
+
 import business.sonderwunsch.SonderwunschModel;
 import javafx.scene.control.Alert;
 import javafx.scene.control.Alert.AlertType;
@@ -15,16 +16,19 @@ public final class HeizungenControl {
 	private HeizungenView heizungenView;
 	private SonderwunschModel sonderwunschModel;
 
+
 	/**
 	 * erzeugt ein ControlObjekt inklusive View-Objekt und Model-Objekt zum 
 	 * Fenster fuer die Sonderwuensche zum Grundriss.
 	 * @param grundrissStage, Stage fuer das View-Objekt zu den Sonderwuenschen zum Grundriss
 	 */
 	public HeizungenControl(KundeModel kundeModel){  
+
 		this.sonderwunschModel = SonderwunschModel.getInstance();
 	   	Stage stageGrundriss = new Stage();
     	stageGrundriss.initModality(Modality.APPLICATION_MODAL);
     	this.heizungenView = new HeizungenView(this, stageGrundriss,sonderwunschModel.getSonderwuensche());
+
 	}
 	    
 	/**
@@ -38,6 +42,7 @@ public final class HeizungenControl {
     } 
 	
 	public boolean pruefeKonstellationSonderwuensche(int[] ausgewaehlteSw){
+
 		if(ausgewaehlteSw[4]==1 && ausgewaehlteSw[3]==1) {
 			Alert alert = new Alert(AlertType.ERROR);
 	        alert.setTitle("Fehler");
@@ -54,5 +59,9 @@ public final class HeizungenControl {
 
 	public void setSonderwunschModel(SonderwunschModel sonderwunschModel) {
 		this.sonderwunschModel = sonderwunschModel;
+
+	
+	
+
 	}
 }

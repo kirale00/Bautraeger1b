@@ -1,17 +1,9 @@
 package tests;
 
-<<<<<<< HEAD
-//import static org.junit.Assert.assertFalse;
-import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertNotEquals;
-import static org.junit.jupiter.api.Assertions.assertTrue;
-import static org.junit.jupiter.api.Assertions.assertFalse;
-=======
 import static org.junit.Assert.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotEquals;
 import static org.junit.jupiter.api.Assertions.assertTrue;
->>>>>>> main
 
 import java.util.ArrayList;
 
@@ -23,9 +15,9 @@ import org.junit.jupiter.api.Test;
 import business.kunde.KundeModel;
 import business.sonderwunsch.Sonderwunsch;
 import business.sonderwunsch.SonderwunschModel;
-import gui.grundriss.GrundrissControl;
+import gui.fliesen.FliesenControl;
 
-public class grundrissTest {
+public class fliesenTest {
 
     SonderwunschModel sWunsch;
 
@@ -48,30 +40,26 @@ public class grundrissTest {
     }
 
     @Test                                               
-    @DisplayName("Nur eine Grundrissvariante darf einen Preis von 0 vermerkt haben")   
+    @DisplayName("Alle Fliesen Sonderwunsche müssen einen Preis vermerkt haben!")   
     void habenPreise() {
         ArrayList<Sonderwunsch> swArray = sWunsch.getSonderwuensche();
-        int anzahlGrundrissvariantenOhnePreis = 0;
+        int anzahlOhnePreis = 0;
         for(Sonderwunsch s  : swArray) {
             if(s.getPreis() == 0) {
-                anzahlGrundrissvariantenOhnePreis++;
+                anzahlOhnePreis++;
             }
 
         }
-        assertEquals(anzahlGrundrissvariantenOhnePreis, 1);
+        assertEquals(anzahlOhnePreis, 0);
         
     }
 
     @Test                                               
-    @DisplayName("Alle Grundrissvarianten müssen einen Namen vermerkt haben")   
+    @DisplayName("Alle Fliesensonderwunsche müssen einen Namen vermerkt haben")   
     void habenNamen() {
         ArrayList<Sonderwunsch> swArray = sWunsch.getSonderwuensche();
         for(Sonderwunsch s  : swArray) {
-<<<<<<< HEAD
-            assertNotEquals(s.getBeschreibung(), "");
-=======
             assertNotEquals(s.getName(), "");
->>>>>>> main
         }
         
     }
