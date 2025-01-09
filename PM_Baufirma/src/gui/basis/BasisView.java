@@ -21,7 +21,7 @@ public abstract class BasisView {
     private Button btnBerechnen 	 	= new Button("Preis berechnen");
     private Button btnSpeichern 	 	= new Button("Speichern");
     //-------Ende Attribute der grafischen Oberflaeche-------
-  
+    private Label lblGesamtPreis = new Label();
    /**
     * erzeugt ein BasisView-Objekt
     */
@@ -51,6 +51,10 @@ public abstract class BasisView {
 	    btnBerechnen.setMinSize(150,  25);
     	gridPaneButtons.add(btnSpeichern, 2, 0);
 	    btnSpeichern.setMinSize(150,  25);
+	    // gesamtPreis
+	    gridPaneButtons.add(lblGesamtPreis, 0, 0);
+	    lblGesamtPreis.setText("Gesamtpreis: 0.00 Euro");
+	    lblGesamtPreis.setFont(Font.font("Arial", FontWeight.BOLD, 16));
     }  
     
     /* Es muessen die Listener implementiert werden. */
@@ -85,8 +89,7 @@ public abstract class BasisView {
   	protected abstract void speichereSonderwuensche();
 
 	public Labeled getLblGesamtPreis() {
-		// TODO Auto-generated method stub
-		return null;
+		return lblGesamtPreis;
 	}
   	
  	
