@@ -13,12 +13,11 @@ import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 
-import business.kunde.KundeModel;
 import business.sonderwunsch.Sonderwunsch;
 import business.sonderwunsch.SonderwunschModel;
-import gui.aussenanlagen.AussenanlagenControl;
 
-public class aussenanlagenTest {
+
+public class innentuerenTest {
 
     SonderwunschModel sWunsch;
     ArrayList<Sonderwunsch> swArrayList;
@@ -28,7 +27,7 @@ public class aussenanlagenTest {
     void setUp() {
         sWunsch = SonderwunschModel.getInstance();
         swArrayList = sWunsch.getSonderwuensche();
-        swArray = swArrayList.subList(43, 49); // Sonderwünsche die zu aussenanlagen gehören
+        swArray = swArrayList.subList(15, 18); // Sonderwünsche die zu Innentueren gehören
     }
 
     @Test                                               
@@ -44,7 +43,7 @@ public class aussenanlagenTest {
     }
 
     @Test                                               
-    @DisplayName("Die Sonderwuensche zu den Aussenanlagen muessen alle einen Preis vermerkt haben!")   
+    @DisplayName("Die Sonderwuensche zu den Innentueren muessen alle einen Preis vermerkt haben!")   
     void habenPreise() {
         int anzahlOhnePreis = 0;
         for(Sonderwunsch s  : swArray) {
@@ -58,7 +57,7 @@ public class aussenanlagenTest {
     }
 
     @Test                                               
-    @DisplayName("Alle Aussenanlagen müssen einen Namen vermerkt haben")   
+    @DisplayName("Alle Innentueren müssen einen Namen vermerkt haben")   
     void habenNamen() {
         for(Sonderwunsch s  : swArray) {
             assertNotEquals(s.getName(), "");

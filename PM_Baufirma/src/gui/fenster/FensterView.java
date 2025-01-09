@@ -1,5 +1,10 @@
 package gui.fenster;
 
+import java.io.BufferedWriter;
+import java.io.FileWriter;
+import java.io.IOException;
+
+import business.kunde.Kunde;
 import gui.basis.BasisView;
 import javafx.scene.control.*;
 import javafx.stage.Stage;
