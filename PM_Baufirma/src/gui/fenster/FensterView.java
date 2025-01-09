@@ -132,4 +132,26 @@ public class FensterView extends BasisView {
 
     protected void speichereSonderwuensche() {
     }
+
+    protected void exportiereSonderwünsche(int[] sonderwuenscheArr, Kunde kunde){
+        //  DB Abfrage nach allen gespeicherten Sonderwunsch IDs des kunden und damit array befüllen?
+        try { 
+            String dateiName = kunde.getHausnummer() + "_" + kunde.getNachname() +  "_Fenster" + ".csv";
+            FileWriter writer = new FileWriter(dateiName); 
+            BufferedWriter bwr = new BufferedWriter(writer); 
+                bwr.write("CSV Export für: " + kunde.getVorname() + " " + kunde.getNachname());
+            for(int i : sonderwuenscheArr) {
+                bwr.write(i); 
+                bwr.write(","); 
+            }
+    
+    
+            bwr.close(); 
+            System.out.println("Sonderwünsche exportiert in Datei: " + dateiName); 
+        } catch (IOException ioe) {
+                ioe.printStackTrace(); 
+        }
+    
+    
+        }
 }

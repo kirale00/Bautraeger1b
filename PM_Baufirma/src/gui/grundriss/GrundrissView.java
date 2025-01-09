@@ -103,6 +103,28 @@ public class GrundrissView extends BasisView {
 		}
 	}
 
+	protected void exportiereSonderwünsche(int[] sonderwuenscheArr, Kunde kunde ){
+        
+        try { 
+            String dateiName = kunde.getHausnummer() + "_" + kunde.getNachname() +  "_Grundrisse" + ".csv";
+            FileWriter writer = new FileWriter(dateiName); 
+            BufferedWriter bwr = new BufferedWriter(writer); 
+            bwr.write("CSV Export für: " + kunde.getVorname() + " " + kunde.getNachname());
+            for(int i : sonderwuenscheArr) {
+                bwr.write(i); 
+                bwr.write(","); 
+            }
+
+
+            bwr.close(); 
+            System.out.println("Sonderwünsche exportiert in Datei: " + dateiName); 
+        } catch (IOException ioe) {
+             ioe.printStackTrace(); 
+        }
+
+
+     }
+
 	protected void speichereSonderwuensche() {
 		int[] ausgewaehlteSw = fuelleSwListe();
 		Boolean speichereSw = this.grundrissControl.pruefeKonstellationSonderwuensche(ausgewaehlteSw);
