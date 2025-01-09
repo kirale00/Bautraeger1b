@@ -40,7 +40,6 @@ public class DatabaseHelper {
 
             switch (key) {
                 case "MYSQL_USER":
-
                     db_user = "root";
                     break;
                 case "MYSQL_ROOT_PASSWORD":
@@ -48,19 +47,10 @@ public class DatabaseHelper {
                     break;
                 case "MYSQL_PASSWORD":
                     //db_password = value;
-
-                    db_user = value;
                     break;
-                //case "MYSQL_PASSWORD":
-                  //  db_password = value;
-
-                    //break;
                 case "MYSQL_DATABASE":
                     db_database = value;
                     break;
-
-                //case "MYSQL_ROOT_PASSWORD":
-                  //  break;
                 default:
                     System.out.println("Unbekannter Schlüssel: " + key);
             }
