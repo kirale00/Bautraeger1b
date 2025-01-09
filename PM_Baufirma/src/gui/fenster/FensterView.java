@@ -4,17 +4,20 @@ package gui.fenster;
 
 import business.kunde.Kunde;
 import business.sonderwunsch.Sonderwunsch;
+import business.sonderwunsch.SonderwunschModel;
+import controller.DatabaseHelper;
 import gui.basis.BasisView;
 import gui.kunde.KundeControl;
+import gui.kunde.KundeView;
 import java.io.BufferedWriter;
 import java.io.FileWriter;
 import java.io.IOException;
 import java.sql.Connection;
-import java.sql.DriverManager;
 import java.sql.PreparedStatement;
-import java.sql.SQLException;
+import java.sql.SQLIntegrityConstraintViolationException;
 import java.util.ArrayList;
 import javafx.scene.control.*;
+import javafx.scene.control.Alert.AlertType;
 import javafx.stage.Stage;
 
 public class FensterView extends BasisView {
@@ -26,6 +29,7 @@ public class FensterView extends BasisView {
     private ArrayList<CheckBox> checkBoxList = new ArrayList<>();
     private int gesamtPreis = 0;
     private TextField gesamtPreisTextField;
+    private SonderwunschModel swModel = SonderwunschModel.getInstance();
 
     public FensterView(FensterControl fensterControl, Stage fensterStage, ArrayList<Sonderwunsch> swListe) {
         super(fensterStage);
@@ -101,41 +105,45 @@ public class FensterView extends BasisView {
             gesamtPreisTextField.setText(Integer.toString(gesamtPreis));
     }
 
-    protected void speichereSonderwuensche() {
-		int[] ausgewaehlteSw = fuelleSwListe();
-		Boolean speichereSw = this.fensterControl.pruefeKonstellationFenster(ausgewaehlteSw);
-
-		if (speichereSw) {
-
-			String url = "jdbc:mysql://localhost:3306/SonderwunschVerwaltung";
-			String benutzername = "user";
-			String passwort = "password";
-
-			String sql = "INSERT INTO SonderWunsch (OptionName, Price, KategorieID) VALUES (?,?,?)";
-
-			try (Connection conn = DriverManager.getConnection(url, benutzername, passwort);
-					PreparedStatement stmt = conn.prepareStatement(sql)) {
-
-				// Setze die Parameter für die SQL-Abfrage
-				for (int i = 0; i < swListe.size(); i++) {
-					stmt.setString(1, swListe.get(i).getName());
-					stmt.setDouble(2, swListe.get(i).getPreis());
-					stmt.setInt(3, 1);
-					stmt.addBatch();
-				}
-
-				stmt.executeBatch();
-				conn.commit();
-				System.out.println("Sonderwünsche wurden gespeichert!");
-
-			} catch (SQLException e) {
-				e.printStackTrace();
-				System.out.println("Fehler beim Speichern der Sonderwünsche in der Datenbank.");
-
+    @Override
+    protected void speichereSonderwuensche(){
+  		int[] ausgewaehlteSw = fuelleSwListe();
+  		boolean speichereSw = this.fensterControl.pruefeKonstellationFenster(ausgewaehlteSw);
+  		
+  		
+  		if(speichereSw) {
+			Connection connection = null;
+			PreparedStatement insertStatement = null;
+			try {
+				connection = new DatabaseHelper().getConnection();
+				insertStatement = connection.prepareStatement("INSERT INTO Kundenwunsch (Kundennummer, Sonderwunschid, Anzahl) values (?,?,?)");
+				for(int i=0; i<checkBoxList.size(); i++) {
+					if (checkBoxList.get(i).isSelected()) {
+                        Sonderwunsch sw = this.swListe.get(i);
+						insertStatement.setInt(1, KundeView.cmbKundeDropdown.getValue());
+						insertStatement.setInt(2, sw.getSonderwunschId());
+						insertStatement.setInt(3, 1);
+						insertStatement.executeUpdate();
+					}
+							
+				}	
+				System.out.println("Die Sonderwünsche wurden erfolgreich gespeichert.");
 			}
-
-		}
-	}
+			catch (SQLIntegrityConstraintViolationException e) {
+                Alert alert = new Alert(AlertType.ERROR);
+				alert.setTitle("Fehler");
+				alert.setHeaderText(null);  // Keine Kopfzeile
+				alert.setContentText("Mindestens eins der ausgewählten Sonderwünschen ist bereits gespeichert!");
+				alert.showAndWait();
+            }
+			catch (Exception e) {
+				System.out.println("Fehler beim Speichern der Sonderwuensche");
+				e.printStackTrace();
+			}
+  		}
+ 		// Es wird erst die Methode pruefeKonstellationSonderwuensche(int[] ausgewaehlteSw)
+  		// aus dem Control aufgerufen, dann die Sonderwuensche gespeichert.
+  	}
 
     protected void exportiereSonderwünsche(int[] sonderwuenscheArr, Kunde kunde) {
         try {
