@@ -103,7 +103,33 @@ public class HeizungenView extends BasisView{
 	    	gesamtpreis += 9990;
 	    } 
   	}
-  	
+
+    @Override
+    protected void exportiereSonderwuensche() {
+        Kunde kunde = KundeModel.getInstance().kunde;
+        try {
+            String dateiName = kunde.getHausnummer() + "_" + kunde.getNachname() + "_Heizungen" + ".csv";
+            FileWriter writer = new FileWriter(dateiName);
+            BufferedWriter bwr = new BufferedWriter(writer);
+            bwr.write("CSV Export für: " + kunde.getVorname() + " " + kunde.getNachname());
+            bwr.newLine();
+            bwr.write("Ausgewählte Heizungen Sonderwünsche (Name, Preis):");
+            bwr.newLine();
+            int[] ausgewaehlteSw = this.fuelleSwListe();
+            for (int i = 0; i < ausgewaehlteSw.length; i++) {
+                if (ausgewaehlteSw[i] == 1) { // Nur ausgewählte Parkett
+                    bwr.write(swListe.get(i).getName() + ", " + swListe.get(i).getPreis() + " Euro");
+                    bwr.newLine();
+                }
+            }
+            bwr.newLine();
+            bwr.close();
+            System.out.println("Heizungen exportiert in Datei: " + dateiName);
+        } catch (IOException ioe) {
+            ioe.printStackTrace();
+        }
+    }
+
    	/* speichert die ausgesuchten Sonderwuensche in der Datenbank ab */
   	protected void speichereSonderwuensche(){
  		// Es wird erst die Methode pruefeKonstellationSonderwuensche(int[] ausgewaehlteSw)
