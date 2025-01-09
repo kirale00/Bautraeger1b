@@ -3,9 +3,14 @@ package gui.fenster;
 import business.kunde.Kunde;
 import business.sonderwunsch.Sonderwunsch;
 import gui.basis.BasisView;
+import gui.kunde.KundeControl;
 import java.io.BufferedWriter;
 import java.io.FileWriter;
 import java.io.IOException;
+import java.sql.Connection;
+import java.sql.DriverManager;
+import java.sql.PreparedStatement;
+import java.sql.SQLException;
 import java.util.ArrayList;
 import javafx.scene.control.*;
 import javafx.stage.Stage;
@@ -13,6 +18,7 @@ import javafx.stage.Stage;
 public class FensterView extends BasisView {
 
     private FensterControl fensterControl;
+    private KundeControl kundeControl;
     private ArrayList<Sonderwunsch> swListe;
     private ArrayList<CheckBox> checkBoxList = new ArrayList<>();
     private int gesamtPreis = 0;
@@ -22,7 +28,6 @@ public class FensterView extends BasisView {
         super(fensterStage);
         this.fensterControl = fensterControl;
         this.swListe = new ArrayList<>(swListe.subList(6, 15));
-
         fensterStage.setTitle("Sonderwünsche zu Fenster-Varianten");
         this.initKomponenten();
         this.leseFensterSonderwuensche();
@@ -39,6 +44,9 @@ public class FensterView extends BasisView {
             txtPreis.setEditable(false);
             Label lblEuro = new Label("Euro");
             CheckBox checkBox = new CheckBox();
+            if (row == 1) {
+                checkBox.setSelected(true);
+            }
 
             super.getGridPaneSonderwunsch().add(lblName, 0, row);
             super.getGridPaneSonderwunsch().add(txtPreis, 1, row);
@@ -77,9 +85,8 @@ public class FensterView extends BasisView {
 
     protected void berechneUndZeigePreisSonderwuensche() {
         int[] ausgewaehlteSw = fuelleSwListe();
-        boolean berechnePreis = this.fensterControl.pruefeKonstellationFenster(ausgewaehlteSw);
 
-        if (berechnePreis) {
+
             gesamtPreis = 0;
             for (int i = 0; i < swListe.size(); i++) {
                 if (checkBoxList.get(i).isSelected()) {
@@ -87,11 +94,43 @@ public class FensterView extends BasisView {
                 }
             }
             gesamtPreisTextField.setText(Integer.toString(gesamtPreis));
-        }
     }
 
     protected void speichereSonderwuensche() {
-    }
+		int[] ausgewaehlteSw = fuelleSwListe();
+		Boolean speichereSw = this.fensterControl.pruefeKonstellationFenster(ausgewaehlteSw);
+
+		if (speichereSw) {
+
+			String url = "jdbc:mysql://localhost:3306/SonderwunschVerwaltung";
+			String benutzername = "user";
+			String passwort = "password";
+
+			String sql = "INSERT INTO SonderWunsch (OptionName, Price, KategorieID) VALUES (?,?,?)";
+
+			try (Connection conn = DriverManager.getConnection(url, benutzername, passwort);
+					PreparedStatement stmt = conn.prepareStatement(sql)) {
+
+				// Setze die Parameter für die SQL-Abfrage
+				for (int i = 0; i < swListe.size(); i++) {
+					stmt.setString(1, swListe.get(i).getName());
+					stmt.setDouble(2, swListe.get(i).getPreis());
+					stmt.setInt(3, 1);
+					stmt.addBatch();
+				}
+
+				stmt.executeBatch();
+				conn.commit();
+				System.out.println("Sonderwünsche wurden gespeichert!");
+
+			} catch (SQLException e) {
+				e.printStackTrace();
+				System.out.println("Fehler beim Speichern der Sonderwünsche in der Datenbank.");
+
+			}
+
+		}
+	}
 
     protected void exportiereSonderwünsche(int[] sonderwuenscheArr, Kunde kunde) {
         try {
