@@ -1,11 +1,15 @@
 package gui.grundriss;
 
+import java.io.BufferedWriter;
+import java.io.FileWriter;
+import java.io.IOException;
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.PreparedStatement;
 import java.sql.SQLException;
 import java.util.ArrayList;
 
+import business.kunde.Kunde;
 import business.sonderwunsch.Sonderwunsch;
 import gui.basis.BasisView;
 import javafx.scene.control.*;
