@@ -9,9 +9,15 @@
             "name": "Main",
             "request": "launch",
             "mainClass": "gui.Main",
+            "projectName": "PM_Baufirma_dcbaded0"
+        },
+        {
+            "type": "java",
+            "name": "Main",
+            "request": "launch",
+            "mainClass": "gui.Main",
             "projectName": "Bautraeger1b_41921eb0",
             "vmArgs": "--module-path /home/malte/Dokumente/javafx-sdk-21.0.5/lib --add-modules javafx.controls,javafx.fxml"
-
         },
         {
             "type": "java",
