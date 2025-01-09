@@ -1,5 +1,9 @@
 package gui.basis;
 
+
+
+
+
 import javafx.geometry.Insets;
 import javafx.scene.Scene;
 import javafx.scene.control.*;
@@ -8,9 +12,10 @@ import javafx.scene.text.*;
 import javafx.stage.Stage;
 
 /**
- * Klasse, welche die Basis fuer die Fenster zu den Sonderwuenschen
- * bereitstellt.
+ * Klasse, welche die Basis fuer die Fenster zu den Sonderwuenschen bereitstellt.
  */
+
+
 public abstract class BasisView {
 
 	// ---Anfang Attribute der grafischen Oberflaeche---
@@ -86,3 +91,4 @@ public abstract class BasisView {
 	protected abstract void speichereSonderwuensche();
 
 }
+

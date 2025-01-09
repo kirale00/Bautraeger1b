@@ -1,5 +1,7 @@
 package gui.fenster;
 
+
+
 import business.kunde.Kunde;
 import business.sonderwunsch.Sonderwunsch;
 import gui.basis.BasisView;
@@ -16,6 +18,7 @@ import javafx.scene.control.*;
 import javafx.stage.Stage;
 
 public class FensterView extends BasisView {
+
 
     private FensterControl fensterControl;
     private KundeControl kundeControl;
@@ -34,7 +37,9 @@ public class FensterView extends BasisView {
     }
 
     protected void initKomponenten() {
+
         super.initKomponenten();
+
         super.getLblSonderwunsch().setText("Fenster-Varianten");
 
         int row = 1;

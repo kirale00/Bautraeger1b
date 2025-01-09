@@ -10,6 +10,7 @@ import javafx.stage.Stage;
 
 public final class FensterControl {
 
+
 	private FensterView fensterView;
 	private KundeModel kundeModel;
 	private SonderwunschModel sonderwunschModel;

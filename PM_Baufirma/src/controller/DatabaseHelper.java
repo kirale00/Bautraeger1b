@@ -1,5 +1,4 @@
 package controller;
-
 import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
@@ -8,14 +7,20 @@ import java.sql.DriverManager;
 import java.sql.SQLException;
 
 public class DatabaseHelper {
+
     /*
      * Verbindungsdaten hier ergänzen, ggf. durch zB config ersetzen statt hardcoden
      */
+
     private static String db_host = "localhost";
     private static String db_user = "java";
     private static String db_password = "supersecure";
     private static String db_database = "SonderwunschVerwaltung";
     private static String db_port = "3306";
+
+
+
+
 
     public DatabaseHelper() {
         try {
@@ -42,8 +47,6 @@ public class DatabaseHelper {
                     break;
                 case "MYSQL_DATABASE":
                     db_database = value;
-                    break;
-                case "MYSQL_ROOT_PASSWORD":
                     break;
                 default:
                     System.out.println("Unbekannter Schlüssel: " + key);
@@ -72,8 +75,10 @@ public class DatabaseHelper {
     }
 
     public Connection getConnection() throws SQLException {
+
         String url = "jdbc:mysql://" + db_host + ":" + db_port + "/" + db_database
                 + "?useUnicode=true&characterEncoding=utf8";
+
         return DriverManager.getConnection(url, getDbUser(), getDbPassword());
     }
 }

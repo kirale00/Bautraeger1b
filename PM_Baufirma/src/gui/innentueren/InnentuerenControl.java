@@ -1,7 +1,9 @@
-package gui.innentüren;
+
+package gui.innentueren;
 
 import business.kunde.KundeModel;
-import gui.grundriss.GrundrissView;
+import business.sonderwunsch.SonderwunschModel;
+
 import javafx.stage.Modality;
 import javafx.stage.Stage;
 
@@ -10,17 +12,26 @@ public class InnentuerenControl {
 	// das View-Objekt des Grundriss-Fensters
 	private InnentuerenView innentuerenView;
 
+	private SonderwunschModel sonderwunschModel;
+
+
 	/**
 	 * erzeugt ein ControlObjekt inklusive View-Objekt und Model-Objekt zum 
 	 * Fenster fuer die Sonderwuensche zum Grundriss.
 	 * @param grundrissStage, Stage fuer das View-Objekt zu den Sonderwuenschen zum Grundriss
 	 */
 	public InnentuerenControl(KundeModel kundeModel){  
+
+		this.sonderwunschModel = SonderwunschModel.getInstance();
 	   	Stage stageInnentueren = new Stage();
     	stageInnentueren.initModality(Modality.APPLICATION_MODAL);
-    	this.innentuerenView = new InnentuerenView(this, stageInnentueren);
+    	this.innentuerenView = new InnentuerenView(this, stageInnentueren,sonderwunschModel.getSonderwuensche());
+	} 
+	public boolean pruefeKonstellationSonderwuensche(int[] ausgewaehlteSw){
+		//keine Hindernisse in der Auswahl gefunden
+		return true;
 	}
-	    
+
 	/**
 	 * macht das GrundrissView-Objekt sichtbar.
 	 */
@@ -30,8 +41,14 @@ public class InnentuerenControl {
 
 	public void leseInnentuerenSonderwuensche(){
     } 
-	
-	public boolean pruefeKonstellationSonderwuensche(int[] ausgewaehlteSw){
-		return true;
+
+	public SonderwunschModel getSonderwunschModel() {
+		return sonderwunschModel;
 	}
+
+	public void setSonderwunschModel(SonderwunschModel sonderwunschModel) {
+		this.sonderwunschModel = sonderwunschModel;
+	}
+	
+
 }
