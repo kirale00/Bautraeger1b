@@ -135,6 +135,7 @@ public class KundeView{
 		mnSonderwuensche.getItems().add(parkettMenuItem);
 		mnSonderwuensche.getItems().add(mnItmHeizungen);
 	    mnSonderwuensche.getItems().add(mnItmInnentueren);
+		mnSonderwuensche.getItems().add(aussenanlagenMenuItem);
 
     }
 
@@ -169,7 +170,7 @@ public class KundeView{
  	        kundeControl.oeffneInnentuerenControl(); 
 	    });
 		aussenanlagenMenuItem.setOnAction(aEvent-> {
-			//kundeControl.oeffneAussenanlagenControl();
+			kundeControl.oeffneAussenanlagenControl();
 		});
     }
     

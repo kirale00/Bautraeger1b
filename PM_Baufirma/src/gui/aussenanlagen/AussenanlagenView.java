@@ -10,14 +10,14 @@ import javafx.stage.Stage;
 
 public class AussenanlagenView extends BasisView {
 
-	private AussenanlagenControl aussenanlagenControl;
+	private gui.aussenanlagen.AussenanlagenControl aussenanlagenControl;
 
 	private ArrayList<Sonderwunsch> swListe;
 	private ArrayList<CheckBox> checkBoxList = new ArrayList<>();
 	private TextField gesamtPreisTextField;
 	private int gesamtPreis = 0;
 
-	public AussenanlagenView(AussenanlagenControl aussenanlagenControl, Stage aussenanlagenStage, ArrayList<Sonderwunsch> swListe) {
+	public AussenanlagenView(gui.aussenanlagen.AussenanlagenControl aussenanlagenControl, Stage aussenanlagenStage, ArrayList<Sonderwunsch> swListe) {
 		super(aussenanlagenStage);
 		this.aussenanlagenControl = aussenanlagenControl;
 		this.swListe = new ArrayList<Sonderwunsch>(swListe.subList(43, 50));

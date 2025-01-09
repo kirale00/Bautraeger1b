@@ -86,6 +86,13 @@ public class KundeControl {
       	}
     	this.innentuerenControl.oeffneInnentuerenView();
     }
+
+	public void oeffneAussenanlagenControl(){
+		if (this.aussenanlagenControl == null){
+			this.aussenanlagenControl = new AussenanlagenControl(kundeModel);
+		}
+		this.aussenanlagenControl.oeffneAussenanlagenView();
+	}
    
 
 	/**
