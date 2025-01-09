@@ -1,79 +1,136 @@
 package gui.fenster;
 
-
-
-import business.kunde.Kunde;
-import business.sonderwunsch.Sonderwunsch;
-import business.sonderwunsch.SonderwunschModel;
-import controller.DatabaseHelper;
-import gui.basis.BasisView;
-import gui.kunde.KundeControl;
-import gui.kunde.KundeView;
 import java.io.BufferedWriter;
 import java.io.FileWriter;
 import java.io.IOException;
-import java.sql.Connection;
-import java.sql.PreparedStatement;
-import java.sql.SQLIntegrityConstraintViolationException;
 import java.util.ArrayList;
+
+import business.kunde.Kunde;
+import business.kunde.KundeModel;
+import business.sonderwunsch.Sonderwunsch;
+import gui.basis.BasisView;
 import javafx.scene.control.*;
-import javafx.scene.control.Alert.AlertType;
 import javafx.stage.Stage;
 
 public class FensterView extends BasisView {
 
+    private ArrayList<Sonderwunsch> swListe;
 
     private FensterControl fensterControl;
-    private KundeControl kundeControl;
-    private ArrayList<Sonderwunsch> swListe;
-    private ArrayList<CheckBox> checkBoxList = new ArrayList<>();
-    private int gesamtPreis = 0;
-    private TextField gesamtPreisTextField;
-    private SonderwunschModel swModel = SonderwunschModel.getInstance();
 
-    public FensterView(FensterControl fensterControl, Stage fensterStage, ArrayList<Sonderwunsch> swListe) {
+    private Label lblSchiebetuerenEG = new Label("Schiebetüren im EG zur Terrasse:");
+    private TextField txtPreisSchiebetuerenEG = new TextField("590");
+    private Label lblSchiebetuerenEGEuro = new Label("Euro");
+    private CheckBox chckBxSchiebetuerenEG = new CheckBox();
+
+    private Label lblSchiebetuerenDG = new Label("Schiebetüren im DG zur Dachterrasse:");
+    private TextField txtPreisSchiebetuerenDG = new TextField("590");
+    private Label lblSchiebetuerenDGEuro = new Label("Euro");
+    private CheckBox chckBxSchiebetuerenDG = new CheckBox();
+
+    private Label lblEinbruchschutz = new Label("Erhöhter Einbruchschutz an der Haustür:");
+    private TextField txtPreisEinbruchschutz = new TextField("690");
+    private Label lblEinbruchschutzEuro = new Label("Euro");
+    private CheckBox chckBxEinbruchschutz = new CheckBox();
+
+    private Label lblRolladenVorbereitungEG = new Label("Vorbereitung für elektrische Antriebe Rolläden EG:");
+    private TextField txtPreisRolladenVorbereitungEG = new TextField("190");
+    private Label lblRolladenVorbereitungEGEuro = new Label("Euro");
+    private CheckBox chckBxRolladenVorbereitungEG = new CheckBox();
+
+    private Label lblRolladenVorbereitungOG = new Label("Vorbereitung für elektrische Antriebe Rolläden OG:");
+    private TextField txtPreisRolladenVorbereitungOG = new TextField("190");
+    private Label lblRolladenVorbereitungOGEuro = new Label("Euro");
+    private CheckBox chckBxRolladenVorbereitungOG = new CheckBox();
+
+    private Label lblRolladenVorbereitungDG = new Label("Vorbereitung für elektrische Antriebe Rolläden DG:");
+    private TextField txtPreisRolladenVorbereitungDG = new TextField("190");
+    private Label lblRolladenVorbereitungDGEuro = new Label("Euro");
+    private CheckBox chckBxRolladenVorbereitungDG = new CheckBox();
+
+    private Label lblElektrischeRolladenEG = new Label("Elektrische Rolläden EG:");
+    private TextField txtPreisElektrischeRolladenEG = new TextField("990");
+    private Label lblElektrischeRolladenEGEuro = new Label("Euro");
+    private CheckBox chckBxElektrischeRolladenEG = new CheckBox();
+
+    private Label lblElektrischeRolladenOG = new Label("Elektrische Rolläden OG:");
+    private TextField txtPreisElektrischeRolladenOG = new TextField("990");
+    private Label lblElektrischeRolladenOGEuro = new Label("Euro");
+    private CheckBox chckBxElektrischeRolladenOG = new CheckBox();
+
+    private Label lblElektrischeRolladenDG = new Label("Elektrische Rolläden DG:");
+    private TextField txtPreisElektrischeRolladenDG = new TextField("990");
+    private Label lblElektrischeRolladenDGEuro = new Label("Euro");
+    private CheckBox chckBxElektrischeRolladenDG = new CheckBox();
+
+    private int[] ausgewaehlteSw;
+
+    public FensterView(FensterControl fensterControl, Stage fensterStage) {
         super(fensterStage);
         this.fensterControl = fensterControl;
-        this.swListe = new ArrayList<>(swListe.subList(6, 15));
-        fensterStage.setTitle("Sonderwünsche zu Fenster-Varianten");
+        fensterStage.setTitle("Sonderwünsche zu Fenster/Außentüren");
+        fensterStage.setWidth(700);
+        fensterStage.setHeight(600);
         this.initKomponenten();
         this.leseFensterSonderwuensche();
     }
 
     protected void initKomponenten() {
-
         super.initKomponenten();
-
         super.getLblSonderwunsch().setText("Fenster-Varianten");
+        super.getGridPaneSonderwunsch().add(lblSchiebetuerenEG, 0, 1);
+        super.getGridPaneSonderwunsch().add(txtPreisSchiebetuerenEG, 1, 1);
+        txtPreisSchiebetuerenEG.setEditable(false);
+        super.getGridPaneSonderwunsch().add(lblSchiebetuerenEGEuro, 2, 1);
+        super.getGridPaneSonderwunsch().add(chckBxSchiebetuerenEG, 3, 1);
 
-        int row = 1;
-        for (Sonderwunsch s : swListe) {
-            Label lblName = new Label(s.getName());
-            TextField txtPreis = new TextField(Integer.toString(s.getPreis()));
-            txtPreis.setEditable(false);
-            Label lblEuro = new Label("Euro");
-            CheckBox checkBox = new CheckBox();
-            if (row == 1) {
-                checkBox.setSelected(true);
-            }
+        super.getGridPaneSonderwunsch().add(lblSchiebetuerenDG, 0, 2);
+        super.getGridPaneSonderwunsch().add(txtPreisSchiebetuerenDG, 1, 2);
+        txtPreisSchiebetuerenDG.setEditable(false);
+        super.getGridPaneSonderwunsch().add(lblSchiebetuerenDGEuro, 2, 2);
+        super.getGridPaneSonderwunsch().add(chckBxSchiebetuerenDG, 3, 2);
 
-            super.getGridPaneSonderwunsch().add(lblName, 0, row);
-            super.getGridPaneSonderwunsch().add(txtPreis, 1, row);
-            super.getGridPaneSonderwunsch().add(lblEuro, 2, row);
-            super.getGridPaneSonderwunsch().add(checkBox, 3, row);
+        super.getGridPaneSonderwunsch().add(lblEinbruchschutz, 0, 3);
+        super.getGridPaneSonderwunsch().add(txtPreisEinbruchschutz, 1, 3);
+        txtPreisEinbruchschutz.setEditable(false);
+        super.getGridPaneSonderwunsch().add(lblEinbruchschutzEuro, 2, 3);
+        super.getGridPaneSonderwunsch().add(chckBxEinbruchschutz, 3, 3);
 
-            checkBoxList.add(checkBox);
-            row++;
-        }
+        super.getGridPaneSonderwunsch().add(lblRolladenVorbereitungEG, 0, 4);
+        super.getGridPaneSonderwunsch().add(txtPreisRolladenVorbereitungEG, 1, 4);
+        txtPreisRolladenVorbereitungEG.setEditable(false);
+        super.getGridPaneSonderwunsch().add(lblRolladenVorbereitungEGEuro, 2, 4);
+        super.getGridPaneSonderwunsch().add(chckBxRolladenVorbereitungEG, 3, 4);
 
-        Label lblGesamt = new Label("Gesamtpreis:");
-        gesamtPreisTextField = new TextField("0");
-        gesamtPreisTextField.setEditable(false);
-        Label lblEuro = new Label("Euro");
+        super.getGridPaneSonderwunsch().add(lblRolladenVorbereitungOG, 0, 5);
+        super.getGridPaneSonderwunsch().add(txtPreisRolladenVorbereitungOG, 1, 5);
+        txtPreisRolladenVorbereitungOG.setEditable(false);
+        super.getGridPaneSonderwunsch().add(lblRolladenVorbereitungOGEuro, 2, 5);
+        super.getGridPaneSonderwunsch().add(chckBxRolladenVorbereitungOG, 3, 5);
 
-        super.getGridPaneSonderwunsch().add(lblGesamt, 0, row);
-        super.getGridPaneSonderwunsch().add(gesamtPreisTextField, 1, row);
-        super.getGridPaneSonderwunsch().add(lblEuro, 2, row);
+        super.getGridPaneSonderwunsch().add(lblRolladenVorbereitungDG, 0, 6);
+        super.getGridPaneSonderwunsch().add(txtPreisRolladenVorbereitungDG, 1, 6);
+        txtPreisRolladenVorbereitungDG.setEditable(false);
+        super.getGridPaneSonderwunsch().add(lblRolladenVorbereitungDGEuro, 2, 6);
+        super.getGridPaneSonderwunsch().add(chckBxRolladenVorbereitungDG, 3, 6);
+
+        super.getGridPaneSonderwunsch().add(lblElektrischeRolladenEG, 0, 7);
+        super.getGridPaneSonderwunsch().add(txtPreisElektrischeRolladenEG, 1, 7);
+        txtPreisElektrischeRolladenEG.setEditable(false);
+        super.getGridPaneSonderwunsch().add(lblElektrischeRolladenEGEuro, 2, 7);
+        super.getGridPaneSonderwunsch().add(chckBxElektrischeRolladenEG, 3, 7);
+
+        super.getGridPaneSonderwunsch().add(lblElektrischeRolladenOG, 0, 8);
+        super.getGridPaneSonderwunsch().add(txtPreisElektrischeRolladenOG, 1, 8);
+        txtPreisElektrischeRolladenOG.setEditable(false);
+        super.getGridPaneSonderwunsch().add(lblElektrischeRolladenOGEuro, 2, 8);
+        super.getGridPaneSonderwunsch().add(chckBxElektrischeRolladenOG, 3, 8);
+
+        super.getGridPaneSonderwunsch().add(lblElektrischeRolladenDG, 0, 9);
+        super.getGridPaneSonderwunsch().add(txtPreisElektrischeRolladenDG, 1, 9);
+        txtPreisElektrischeRolladenDG.setEditable(false);
+        super.getGridPaneSonderwunsch().add(lblElektrischeRolladenDGEuro, 2, 9);
+        super.getGridPaneSonderwunsch().add(chckBxElektrischeRolladenDG, 3, 9);
     }
 
     public void oeffneFensterView() {
@@ -84,83 +141,37 @@ public class FensterView extends BasisView {
         this.fensterControl.leseFensterSonderwuensche();
     }
 
-    private int[] fuelleSwListe() {
-        int[] ausgewaehlteSw = new int[swListe.size()];
-        for (int i = 0; i < swListe.size(); i++) {
-            ausgewaehlteSw[i] = checkBoxList.get(i).isSelected() ? 1 : 0;
-        }
-        return ausgewaehlteSw;
-    }
-
     protected void berechneUndZeigePreisSonderwuensche() {
-        int[] ausgewaehlteSw = fuelleSwListe();
-
-
-            gesamtPreis = 0;
-            for (int i = 0; i < swListe.size(); i++) {
-                if (checkBoxList.get(i).isSelected()) {
-                    gesamtPreis += swListe.get(i).getPreis();
-                }
-            }
-            gesamtPreisTextField.setText(Integer.toString(gesamtPreis));
     }
 
-    @Override
-    protected void speichereSonderwuensche(){
-  		int[] ausgewaehlteSw = fuelleSwListe();
-  		boolean speichereSw = this.fensterControl.pruefeKonstellationFenster(ausgewaehlteSw);
-  		
-  		
-  		if(speichereSw) {
-			Connection connection = null;
-			PreparedStatement insertStatement = null;
-			try {
-				connection = new DatabaseHelper().getConnection();
-				insertStatement = connection.prepareStatement("INSERT INTO Kundenwunsch (Kundennummer, Sonderwunschid, Anzahl) values (?,?,?)");
-				for(int i=0; i<checkBoxList.size(); i++) {
-					if (checkBoxList.get(i).isSelected()) {
-                        Sonderwunsch sw = this.swListe.get(i);
-						insertStatement.setInt(1, KundeView.cmbKundeDropdown.getValue());
-						insertStatement.setInt(2, sw.getSonderwunschId());
-						insertStatement.setInt(3, 1);
-						insertStatement.executeUpdate();
-					}
-							
-				}	
-				System.out.println("Die Sonderwünsche wurden erfolgreich gespeichert.");
-			}
-			catch (SQLIntegrityConstraintViolationException e) {
-                Alert alert = new Alert(AlertType.ERROR);
-				alert.setTitle("Fehler");
-				alert.setHeaderText(null);  // Keine Kopfzeile
-				alert.setContentText("Mindestens eins der ausgewählten Sonderwünschen ist bereits gespeichert!");
-				alert.showAndWait();
-            }
-			catch (Exception e) {
-				System.out.println("Fehler beim Speichern der Sonderwuensche");
-				e.printStackTrace();
-			}
-  		}
- 		// Es wird erst die Methode pruefeKonstellationSonderwuensche(int[] ausgewaehlteSw)
-  		// aus dem Control aufgerufen, dann die Sonderwuensche gespeichert.
-  	}
-
-    protected void exportiereSonderwünsche(int[] sonderwuenscheArr, Kunde kunde) {
-        try {
-            String dateiName = kunde.getHausnummer() + "_" + kunde.getNachname() + "_fenster.csv";
-            FileWriter writer = new FileWriter(dateiName);
-            BufferedWriter bwr = new BufferedWriter(writer);
-
-            bwr.write("Fenster/Tueren CSV Export für: " + kunde.getVorname() + " " + kunde.getNachname());
-            bwr.newLine();
-            for (int i : sonderwuenscheArr) {
-                bwr.write(Integer.toString(i));
-                bwr.write(",");
-            }
-            bwr.close();
-            System.out.println("Sonderwünsche exportiert in Datei: " + dateiName);
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
+    protected void speichereSonderwuensche() {
     }
+
+	protected void exportiereSonderwuensche() {
+		Kunde kunde = KundeModel.getInstance().kunde;
+		try {
+			String dateiName = kunde.getHausnummer() + "_" + kunde.getNachname() + "_Grundrisse" + ".csv";
+			FileWriter writer = new FileWriter(dateiName);
+			BufferedWriter bwr = new BufferedWriter(writer);
+	
+			bwr.write("CSV Export für: " + kunde.getVorname() + " " + kunde.getNachname());
+			bwr.newLine();
+			bwr.write("Ausgewählte Sonderwünsche (Name, Preis):");
+			bwr.newLine();
+	
+			for (int i = 0; i < ausgewaehlteSw.length; i++) {
+				if (ausgewaehlteSw[i] == 1) { // Nur ausgewählte Sonderwünsche
+					bwr.write(swListe.get(i).getName() + ", " + swListe.get(i).getPreis() + " Euro");
+					bwr.newLine();
+				}
+			}
+			bwr.newLine();
+	
+			bwr.close();
+			System.out.println("Sonderwünsche exportiert in Datei: " + dateiName);
+		} catch (IOException ioe) {
+			ioe.printStackTrace();
+		}
+	}
+	
 }
