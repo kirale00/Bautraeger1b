@@ -106,4 +106,10 @@ public class ParkettView extends BasisView {
 		// ausgewaehlteSw)
 		// aus dem Control aufgerufen, dann die Sonderwuensche gespeichert.
 	}
+
+	@Override
+	protected void exportiereSonderwuensche() {
+		// TODO Auto-generated method stub
+		throw new UnsupportedOperationException("Unimplemented method 'exportiereSonderwuensche'");
+	}
 }

@@ -1,10 +1,20 @@
 package gui.fenster;
 
+import java.io.BufferedWriter;
+import java.io.FileWriter;
+import java.io.IOException;
+import java.util.ArrayList;
+
+import business.kunde.Kunde;
+import business.kunde.KundeModel;
+import business.sonderwunsch.Sonderwunsch;
 import gui.basis.BasisView;
 import javafx.scene.control.*;
 import javafx.stage.Stage;
 
 public class FensterView extends BasisView {
+
+    private ArrayList<Sonderwunsch> swListe;
 
     private FensterControl fensterControl;
 
@@ -53,10 +63,14 @@ public class FensterView extends BasisView {
     private Label lblElektrischeRolladenDGEuro = new Label("Euro");
     private CheckBox chckBxElektrischeRolladenDG = new CheckBox();
 
+    private int[] ausgewaehlteSw;
+
     public FensterView(FensterControl fensterControl, Stage fensterStage) {
         super(fensterStage);
         this.fensterControl = fensterControl;
         fensterStage.setTitle("Sonderwünsche zu Fenster/Außentüren");
+        fensterStage.setWidth(700);
+        fensterStage.setHeight(600);
         this.initKomponenten();
         this.leseFensterSonderwuensche();
     }
@@ -133,25 +147,31 @@ public class FensterView extends BasisView {
     protected void speichereSonderwuensche() {
     }
 
-    protected void exportiereSonderwünsche(int[] sonderwuenscheArr, Kunde kunde){
-        //  DB Abfrage nach allen gespeicherten Sonderwunsch IDs des kunden und damit array befüllen?
-        try { 
-            String dateiName = kunde.getHausnummer() + "_" + kunde.getNachname() +  "_Fenster" + ".csv";
-            FileWriter writer = new FileWriter(dateiName); 
-            BufferedWriter bwr = new BufferedWriter(writer); 
-                bwr.write("CSV Export für: " + kunde.getVorname() + " " + kunde.getNachname());
-            for(int i : sonderwuenscheArr) {
-                bwr.write(i); 
-                bwr.write(","); 
-            }
-    
-    
-            bwr.close(); 
-            System.out.println("Sonderwünsche exportiert in Datei: " + dateiName); 
-        } catch (IOException ioe) {
-                ioe.printStackTrace(); 
-        }
-    
-    
-        }
+	protected void exportiereSonderwuensche() {
+		Kunde kunde = KundeModel.getInstance().kunde;
+		try {
+			String dateiName = kunde.getHausnummer() + "_" + kunde.getNachname() + "_Grundrisse" + ".csv";
+			FileWriter writer = new FileWriter(dateiName);
+			BufferedWriter bwr = new BufferedWriter(writer);
+	
+			bwr.write("CSV Export für: " + kunde.getVorname() + " " + kunde.getNachname());
+			bwr.newLine();
+			bwr.write("Ausgewählte Sonderwünsche (Name, Preis):");
+			bwr.newLine();
+	
+			for (int i = 0; i < ausgewaehlteSw.length; i++) {
+				if (ausgewaehlteSw[i] == 1) { // Nur ausgewählte Sonderwünsche
+					bwr.write(swListe.get(i).getName() + ", " + swListe.get(i).getPreis() + " Euro");
+					bwr.newLine();
+				}
+			}
+			bwr.newLine();
+	
+			bwr.close();
+			System.out.println("Sonderwünsche exportiert in Datei: " + dateiName);
+		} catch (IOException ioe) {
+			ioe.printStackTrace();
+		}
+	}
+	
 }

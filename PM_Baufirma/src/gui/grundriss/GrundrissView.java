@@ -1,11 +1,16 @@
 package gui.grundriss;
 
+import java.io.BufferedWriter;
+import java.io.FileWriter;
+import java.io.IOException;
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.PreparedStatement;
 import java.sql.SQLException;
 import java.util.ArrayList;
 
+import business.kunde.Kunde;
+import business.kunde.KundeModel;
 import business.sonderwunsch.Sonderwunsch;
 import gui.basis.BasisView;
 import javafx.scene.control.*;
@@ -24,6 +29,7 @@ public class GrundrissView extends BasisView {
 	private ArrayList<CheckBox> checkBoxList = new ArrayList<>();
 	private TextField gesamtPreisTextField;
 	private int gesamtPreis = 0;
+	private int[] ausgewaehlteSw;
 
 	public GrundrissView(GrundrissControl grundrissControl, Stage grundrissStage, ArrayList<Sonderwunsch> swListe) {
 		super(grundrissStage);
@@ -89,7 +95,7 @@ public class GrundrissView extends BasisView {
 	}
 
 	protected void berechneUndZeigePreisSonderwuensche() {
-		int[] ausgewaehlteSw = fuelleSwListe();
+		ausgewaehlteSw = fuelleSwListe();
 
 		Boolean berechnePreis = this.grundrissControl.pruefeKonstellationSonderwuensche(ausgewaehlteSw);
 		if (berechnePreis) {
@@ -103,27 +109,33 @@ public class GrundrissView extends BasisView {
 		}
 	}
 
-	protected void exportiereSonderwünsche(int[] sonderwuenscheArr, Kunde kunde ){
-        
-        try { 
-            String dateiName = kunde.getHausnummer() + "_" + kunde.getNachname() +  "_Grundrisse" + ".csv";
-            FileWriter writer = new FileWriter(dateiName); 
-            BufferedWriter bwr = new BufferedWriter(writer); 
-            bwr.write("CSV Export für: " + kunde.getVorname() + " " + kunde.getNachname());
-            for(int i : sonderwuenscheArr) {
-                bwr.write(i); 
-                bwr.write(","); 
-            }
-
-
-            bwr.close(); 
-            System.out.println("Sonderwünsche exportiert in Datei: " + dateiName); 
-        } catch (IOException ioe) {
-             ioe.printStackTrace(); 
-        }
-
-
-     }
+	protected void exportiereSonderwuensche() {
+		Kunde kunde = KundeModel.getInstance().kunde;
+		try {
+			String dateiName = kunde.getHausnummer() + "_" + kunde.getNachname() + "_Grundrisse" + ".csv";
+			FileWriter writer = new FileWriter(dateiName);
+			BufferedWriter bwr = new BufferedWriter(writer);
+	
+			bwr.write("CSV Export für: " + kunde.getVorname() + " " + kunde.getNachname());
+			bwr.newLine();
+			bwr.write("Ausgewählte Sonderwünsche (Name, Preis):");
+			bwr.newLine();
+	
+			for (int i = 0; i < ausgewaehlteSw.length; i++) {
+				if (ausgewaehlteSw[i] == 1) { // Nur ausgewählte Sonderwünsche
+					bwr.write(swListe.get(i).getName() + ", " + swListe.get(i).getPreis() + " Euro");
+					bwr.newLine();
+				}
+			}
+			bwr.newLine();
+	
+			bwr.close();
+			System.out.println("Sonderwünsche exportiert in Datei: " + dateiName);
+		} catch (IOException ioe) {
+			ioe.printStackTrace();
+		}
+	}
+	
 
 	protected void speichereSonderwuensche() {
 		int[] ausgewaehlteSw = fuelleSwListe();

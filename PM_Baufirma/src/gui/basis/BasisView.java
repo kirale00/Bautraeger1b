@@ -21,6 +21,7 @@ public abstract class BasisView {
 	private Label lblSonderwunsch = new Label("Sonderwunsch");
 	private Button btnBerechnen = new Button("Preis berechnen");
 	private Button btnSpeichern = new Button("Speichern");
+	private Button btnExport = new Button("Exportieren");
 	// -------Ende Attribute der grafischen Oberflaeche-------
 
 	/**
@@ -50,8 +51,12 @@ public abstract class BasisView {
 		// Buttons
 		gridPaneButtons.add(btnBerechnen, 1, 0);
 		btnBerechnen.setMinSize(150, 25);
+
 		gridPaneButtons.add(btnSpeichern, 2, 0);
 		btnSpeichern.setMinSize(150, 25);
+
+		gridPaneButtons.add(btnExport, 3, 0);
+		btnExport.setMinSize(150, 25);
 	}
 
 	/* Es muessen die Listener implementiert werden. */
@@ -61,6 +66,9 @@ public abstract class BasisView {
 		});
 		btnSpeichern.setOnAction(aEvent -> {
 			speichereSonderwuensche();
+		});
+		btnExport.setOnAction(aEvent -> {
+			exportiereSonderwuensche();
 		});
 	}
 
@@ -84,5 +92,7 @@ public abstract class BasisView {
 
 	/* speichert die ausgesuchten Sonderwuensche in der Datenbank ab */
 	protected abstract void speichereSonderwuensche();
+
+	protected abstract void exportiereSonderwuensche();
 
 }
