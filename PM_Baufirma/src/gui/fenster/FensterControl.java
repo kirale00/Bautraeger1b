@@ -11,7 +11,7 @@ import javafx.stage.Stage;
 public final class FensterControl {
 
 
-	private FensterView fensterView;
+	private gui.fenster.FensterView fensterView;
 	private KundeModel kundeModel;
 	private SonderwunschModel sonderwunschModel;
 
@@ -20,7 +20,7 @@ public final class FensterControl {
 		Stage stageFenster = new Stage();
 		this.kundeModel = kundeModel;
 		stageFenster.initModality(Modality.APPLICATION_MODAL);
-		this.fensterView = new FensterView(this, stageFenster, sonderwunschModel.getSonderwuensche());
+		this.fensterView = new gui.fenster.FensterView(this, stageFenster /*sonderwunschModel.getSonderwuensche()*/);
 	}
 
 	public void oeffneFensterView() {

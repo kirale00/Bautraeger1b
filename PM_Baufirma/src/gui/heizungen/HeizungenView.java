@@ -1,12 +1,17 @@
 package gui.heizungen;
 
 
+import java.io.BufferedWriter;
+import java.io.FileWriter;
+import java.io.IOException;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.SQLException;
 import java.sql.SQLIntegrityConstraintViolationException;
 import java.util.ArrayList;
 
+import business.kunde.Kunde;
+import business.kunde.KundeModel;
 import business.sonderwunsch.Sonderwunsch;
 import business.sonderwunsch.SonderwunschModel;
 import controller.DatabaseHelper;
@@ -201,4 +206,33 @@ public class HeizungenView extends BasisView{
 
   	}
 
+	@Override
+	protected void exportiereSonderwuensche() {
+		Kunde kunde = KundeModel.getInstance().kunde;
+		try {
+			String dateiName = kunde.getHausnummer() + "_" + kunde.getNachname() + "_Heizungen" + ".csv";
+			FileWriter writer = new FileWriter(dateiName);
+			BufferedWriter bwr = new BufferedWriter(writer);
+
+			bwr.write("CSV Export für: " + kunde.getVorname() + " " + kunde.getNachname());
+			bwr.newLine();
+			bwr.write("Ausgewählte Heizungen (Name, Preis):");
+			bwr.newLine();
+
+			int[] ausgewaehlteSw = fuelleSwListe();
+
+			for (int i = 0; i < ausgewaehlteSw.length; i++) {
+				if (ausgewaehlteSw[i] == 1) { // Nur ausgewählte Sonderwünsche
+					bwr.write(swListe.get(i).getName() + ", " + swListe.get(i).getPreis() + " Euro");
+					bwr.newLine();
+				}
+			}
+			bwr.newLine();
+
+			bwr.close();
+			System.out.println("Sonderwünsche Heizungen exportiert in Datei: " + dateiName);
+		} catch (IOException ioe) {
+			ioe.printStackTrace();
+		}
+	}
 }

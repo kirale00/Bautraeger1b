@@ -24,7 +24,7 @@ import javafx.stage.Stage;
 
 public class InnentuerenView extends BasisView{
  	// das Control-Objekt des Grundriss-Fensters
-	private InnentuerenControl innentuerenControl;
+	private gui.innentueren.InnentuerenControl innentuerenControl;
 
     private SonderwunschModel swModel = SonderwunschModel.getInstance();
 	private ArrayList<Sonderwunsch> swListe;
@@ -42,7 +42,7 @@ public class InnentuerenView extends BasisView{
      * @param grundrissStage Stage, enthaelt das Stage-Objekt fuer diese View
      */
 
-    public InnentuerenView (InnentuerenControl innentuerenControl, Stage innentuerenStage,ArrayList<Sonderwunsch> swListe){
+    public InnentuerenView (gui.innentueren.InnentuerenControl innentuerenControl, Stage innentuerenStage, ArrayList<Sonderwunsch> swListe){
     	super(innentuerenStage);
         this.innentuerenControl = innentuerenControl;
         innentuerenStage.setTitle("Sonderwünsche zu Innentueren-Varianten");
@@ -189,7 +189,10 @@ public class InnentuerenView extends BasisView{
   		}
     }
 
-  	
-  	
+	@Override
+	protected void exportiereSonderwuensche() {
+
+	}
+
 
 }
