@@ -3,6 +3,7 @@ package gui.aussenanlagen;
 import java.util.ArrayList;
 
 import business.sonderwunsch.Sonderwunsch;
+import controller.SpeicherHelper;
 import gui.basis.BasisView;
 import javafx.scene.control.*;
 import javafx.stage.Stage;
@@ -102,8 +103,12 @@ public class AussenanlagenView extends BasisView {
 	}
 
 	protected void speichereSonderwuensche() {
-		// Es wird erst die Methode pruefeKonstellationSonderwuensche(int[]
-		// ausgewaehlteSw)
-		// aus dem Control aufgerufen, dann die Sonderwuensche gespeichert.
+		int[] ausgewaehlteSw = fuelleSwListe();
+		Boolean speichereSw = this.aussenanlagenControl.pruefeKonstellationSonderwuensche(ausgewaehlteSw);
+
+		if(speichereSw) {
+			//todo: prüfen ob swListe hier geht?
+			SpeicherHelper.save(swListe, checkBoxList);
+		}
 	}
 }

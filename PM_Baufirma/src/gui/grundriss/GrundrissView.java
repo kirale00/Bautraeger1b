@@ -13,6 +13,7 @@ import business.kunde.Kunde;
 import business.sonderwunsch.Sonderwunsch;
 import business.sonderwunsch.SonderwunschModel;
 import controller.DatabaseHelper;
+import controller.SpeicherHelper;
 import gui.basis.BasisView;
 import gui.kunde.KundeView;
 import javafx.scene.control.*;
@@ -137,45 +138,7 @@ public class GrundrissView extends BasisView{
   		
   		
   		if(speichereSw) {
-			ArrayList<Sonderwunsch> wuensche = swModel.getSonderwuensche();
-
-			Connection connection = null;
-			PreparedStatement insertStatement = null;
-			
-
-
-
-			try {
-
-				connection = new DatabaseHelper().getConnection();
-
-				insertStatement = connection.prepareStatement("INSERT INTO Kundenwunsch (Kundennummer, Sonderwunschid, Anzahl) values (?,?,?)");
-
-				for(int i=0; i<checkBoxList.size(); i++) {
-					if (checkBoxList.get(i).isSelected()) {
-						insertStatement.setInt(1, KundeView.cmbKundeDropdown.getValue());
-						insertStatement.setInt(2, wuensche.get(i).getSonderwunschId());
-						insertStatement.setInt(3, 1);
-						insertStatement.executeUpdate();
-					}
-							
-				}	
-				System.out.println("Die Sonderwünsche wurden erfolgreich gespeichert.");
-				//schliesseBasisView();
-			}
-			catch (SQLIntegrityConstraintViolationException e) {
-                Alert alert = new Alert(AlertType.ERROR);
-				alert.setTitle("Fehler");
-				alert.setHeaderText(null);  // Keine Kopfzeile
-				alert.setContentText("Mindestens eins der ausgewählten Sonderwünschen ist bereits gespeichert!");
-				alert.showAndWait();
-            }
-			catch (Exception e) {
-				System.out.println("Fehler beim Speichern der Sonderwuensche");
-				e.printStackTrace();
-			}
-			 
-  			
+			SpeicherHelper.save(swModel.getSonderwuensche(), checkBoxList);
   		}
  		// Es wird erst die Methode pruefeKonstellationSonderwuensche(int[] ausgewaehlteSw)
   		// aus dem Control aufgerufen, dann die Sonderwuensche gespeichert.
