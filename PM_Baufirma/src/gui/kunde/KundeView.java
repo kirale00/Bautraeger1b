@@ -176,14 +176,29 @@ public class KundeView{
     
     private void legeKundenAn(){
          Kunde kunde = new Kunde();
-		 if(cmbKundeDropdown.getValue() != 0) {
-			 return;
+		 Integer selectedValue = cmbBxNummerHaus.getValue();
+
+		 if (selectedValue == null || selectedValue < 1 || selectedValue > 24) {
+			this.zeigeFehlermeldung("Ungueltige Zahl", "Waehlen Sie bitte eine Zahl von 1 bis 24!");
+			return;
 		 }
+	
 		 kunde.setVorname(txtVorname.getText());
 		 kunde.setNachname(txtNachname.getText());
 		 kunde.setEmail(txtEmail.getText());
 		 kunde.setTelefonnummer(txtTelefon.getText());
 		 kunde.setHausnummer(Integer.parseInt(txtHausnummer.getText()));
+		 if (kunde.getNachname() == null || kunde.getNachname().trim().isEmpty()) {
+			this.zeigeFehlermeldung("Fehlender Nachname", "Der Nachname muss vorhanden sein.");
+			return;
+		}
+		if ((kunde.getEmail() == null || !kunde.getEmail().contains("@")) && (kunde.getTelefonnummer() == null || !kunde.getTelefonnummer().matches("\\d+"))) {
+        	this.zeigeFehlermeldung(
+            	"Kontaktinformationen ungueltig",
+            	"Telefonnummer oder E-Mail-Adresse müssen vorhanden sein. Die Telefonnummer darf nur aus Ziffern bestehen. Die E-Mail-Adresse muss ein @ enthalten."
+        	);
+        	return;
+    	}
          // Objekt kunde fuellen
          kundeControl.speichereKunden(kunde);
 		 //reset machen:
