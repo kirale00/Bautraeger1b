@@ -6,24 +6,28 @@ import static org.junit.jupiter.api.Assertions.assertNotEquals;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
 import java.util.ArrayList;
+import java.util.List;
 
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 
-import business.kunde.KundeModel;
 import business.sonderwunsch.Sonderwunsch;
 import business.sonderwunsch.SonderwunschModel;
-import gui.fliesen.FliesenControl;
+
 
 public class fliesenTest {
 
     SonderwunschModel sWunsch;
+    ArrayList<Sonderwunsch> swArrayList;
+    List<Sonderwunsch> swArray;
 
     @BeforeEach                                         
     void setUp() {
         sWunsch = SonderwunschModel.getInstance();
+        swArrayList = sWunsch.getSonderwuensche();
+        swArray = swArrayList.subList(27, 32); // Sonderwünsche die zu fensterAussentueren gehören
     }
 
     @Test                                               
@@ -35,14 +39,12 @@ public class fliesenTest {
     @Test                                               
     @DisplayName("Das Sonderwunschmodel sollte mit Sonderwünschen befüllt sein")   
     void isNotEmpty() {
-        ArrayList<Sonderwunsch> swArray = sWunsch.getSonderwuensche();
         assertFalse(swArray.isEmpty());
     }
 
     @Test                                               
-    @DisplayName("Alle Fliesen Sonderwunsche müssen einen Preis vermerkt haben!")   
+    @DisplayName("Die Sonderwuensche zu den Fliesen muessen alle einen Preis vermerkt haben!")   
     void habenPreise() {
-        ArrayList<Sonderwunsch> swArray = sWunsch.getSonderwuensche();
         int anzahlOhnePreis = 0;
         for(Sonderwunsch s  : swArray) {
             if(s.getPreis() == 0) {
@@ -55,9 +57,8 @@ public class fliesenTest {
     }
 
     @Test                                               
-    @DisplayName("Alle Fliesensonderwunsche müssen einen Namen vermerkt haben")   
+    @DisplayName("Alle Fliesen müssen einen Namen vermerkt haben")   
     void habenNamen() {
-        ArrayList<Sonderwunsch> swArray = sWunsch.getSonderwuensche();
         for(Sonderwunsch s  : swArray) {
             assertNotEquals(s.getName(), "");
         }

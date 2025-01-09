@@ -14,6 +14,7 @@ import static org.junit.jupiter.api.Assertions.assertTrue;
 >>>>>>> main
 
 import java.util.ArrayList;
+import java.util.List;
 
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
@@ -27,30 +28,36 @@ import gui.grundriss.GrundrissControl;
 
 public class grundrissTest {
 
+    
+
+
     SonderwunschModel sWunsch;
+    ArrayList<Sonderwunsch> swArrayList;
+    List<Sonderwunsch> swArray;
 
     @BeforeEach                                         
     void setUp() {
         sWunsch = SonderwunschModel.getInstance();
+        swArrayList = sWunsch.getSonderwuensche();
+        swArray = swArrayList.subList(0, 6); // Sonderwünsche die zu Grundrisse gehören
     }
 
     @Test                                               
     @DisplayName("Singleton Pattern in SonderwunschModel sollte umgesetzt sein und korrekte Rückgabe liefern")   
     void singleton() {
-        assertTrue(sWunsch != null);
+        assertTrue(swArray != null);
     }
 
     @Test                                               
     @DisplayName("Das Sonderwunschmodel sollte mit Sonderwünschen befüllt sein")   
     void isNotEmpty() {
-        ArrayList<Sonderwunsch> swArray = sWunsch.getSonderwuensche();
         assertFalse(swArray.isEmpty());
     }
 
     @Test                                               
     @DisplayName("Nur eine Grundrissvariante darf einen Preis von 0 vermerkt haben")   
     void habenPreise() {
-        ArrayList<Sonderwunsch> swArray = sWunsch.getSonderwuensche();
+
         int anzahlGrundrissvariantenOhnePreis = 0;
         for(Sonderwunsch s  : swArray) {
             if(s.getPreis() == 0) {
@@ -65,7 +72,7 @@ public class grundrissTest {
     @Test                                               
     @DisplayName("Alle Grundrissvarianten müssen einen Namen vermerkt haben")   
     void habenNamen() {
-        ArrayList<Sonderwunsch> swArray = sWunsch.getSonderwuensche();
+
         for(Sonderwunsch s  : swArray) {
 <<<<<<< HEAD
             assertNotEquals(s.getBeschreibung(), "");
@@ -78,7 +85,7 @@ public class grundrissTest {
 
     @AfterEach                                         
     void tearDown() {
-        sWunsch = null;
+        swArray = null;
     }
 
     

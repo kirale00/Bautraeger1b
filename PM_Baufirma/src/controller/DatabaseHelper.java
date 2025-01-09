@@ -13,9 +13,9 @@ public class DatabaseHelper {
      */
 
     private static String db_host = "localhost";
-    private static String db_user = "";
-    private static String db_password = "";
-    private static String db_database = "";
+    private static String db_user = "java";
+    private static String db_password = "supersecure";
+    private static String db_database = "SonderwunschVerwaltung";
     private static String db_port = "3306";
 
 
@@ -40,13 +40,10 @@ public class DatabaseHelper {
 
             switch (key) {
                 case "MYSQL_USER":
-                    db_user = "root";
-                    break;
-                case "MYSQL_ROOT_PASSWORD":
-                	db_password = value;
+                    db_user = "java";
                     break;
                 case "MYSQL_PASSWORD":
-                    //db_password = value;
+                    db_password = "supersecure";
                     break;
                 case "MYSQL_DATABASE":
                     db_database = value;
