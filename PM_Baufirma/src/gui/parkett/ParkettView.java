@@ -1,7 +1,12 @@
 package gui.parkett;
 
+import java.io.BufferedWriter;
+import java.io.FileWriter;
+import java.io.IOException;
 import java.util.ArrayList;
 
+import business.kunde.Kunde;
+import business.kunde.KundeModel;
 import business.sonderwunsch.Sonderwunsch;
 import gui.basis.BasisView;
 import javafx.scene.control.*;
@@ -109,7 +114,30 @@ public class ParkettView extends BasisView {
 
 	@Override
 	protected void exportiereSonderwuensche() {
-		// TODO Auto-generated method stub
-		throw new UnsupportedOperationException("Unimplemented method 'exportiereSonderwuensche'");
+		Kunde kunde = KundeModel.getInstance().kunde;
+		try {
+			String dateiName = kunde.getHausnummer() + "_" + kunde.getNachname() + "_Parkett" + ".csv";
+			FileWriter writer = new FileWriter(dateiName);
+			BufferedWriter bwr = new BufferedWriter(writer);
+
+			bwr.write("CSV Export für: " + kunde.getVorname() + " " + kunde.getNachname());
+			bwr.newLine();
+			bwr.write("Ausgewählte Parkett Sonderwünsche (Name, Preis):");
+			bwr.newLine();
+
+			int[] ausgewaehlteSw = this.fuelleSwListe();
+
+			for (int i = 0; i < ausgewaehlteSw.length; i++) {
+				if (ausgewaehlteSw[i] == 1) { // Nur ausgewählte Parkett
+					bwr.write(swListe.get(i).getName() + ", " + swListe.get(i).getPreis() + " Euro");
+					bwr.newLine();
+				}
+			}
+			bwr.newLine();
+			bwr.close();
+			System.out.println("Parkett exportiert in Datei: " + dateiName);
+		} catch (IOException ioe) {
+			ioe.printStackTrace();
+		}
 	}
 }
