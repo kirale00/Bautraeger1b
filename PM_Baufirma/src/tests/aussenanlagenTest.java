@@ -6,6 +6,7 @@ import static org.junit.jupiter.api.Assertions.assertNotEquals;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
 import java.util.ArrayList;
+import java.util.List;
 
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
@@ -20,10 +21,14 @@ import gui.aussenanlagen.AussenanlagenControl;
 public class aussenanlagenTest {
 
     SonderwunschModel sWunsch;
+    ArrayList<Sonderwunsch> swArrayList;
+    List<Sonderwunsch> swArray;
 
     @BeforeEach                                         
     void setUp() {
         sWunsch = SonderwunschModel.getInstance();
+        swArrayList = sWunsch.getSonderwuensche();
+        swArray = swArrayList.subList(43, 49); // Sonderwünsche die zu aussenanlagen gehören
     }
 
     @Test                                               
@@ -35,14 +40,12 @@ public class aussenanlagenTest {
     @Test                                               
     @DisplayName("Das Sonderwunschmodel sollte mit Sonderwünschen befüllt sein")   
     void isNotEmpty() {
-        ArrayList<Sonderwunsch> swArray = sWunsch.getSonderwuensche();
         assertFalse(swArray.isEmpty());
     }
 
     @Test                                               
     @DisplayName("Die Sonderwuensche zu den Aussenanlagen muessen alle einen Preis vermerkt haben!")   
     void habenPreise() {
-        ArrayList<Sonderwunsch> swArray = sWunsch.getSonderwuensche();
         int anzahlOhnePreis = 0;
         for(Sonderwunsch s  : swArray) {
             if(s.getPreis() == 0) {
@@ -57,7 +60,6 @@ public class aussenanlagenTest {
     @Test                                               
     @DisplayName("Alle Aussenanlagen müssen einen Namen vermerkt haben")   
     void habenNamen() {
-        ArrayList<Sonderwunsch> swArray = sWunsch.getSonderwuensche();
         for(Sonderwunsch s  : swArray) {
             assertNotEquals(s.getName(), "");
         }

@@ -1,7 +1,20 @@
 package gui.heizungen;
 
+
+import java.sql.Connection;
+import java.sql.PreparedStatement;
+import java.sql.SQLException;
+import java.sql.SQLIntegrityConstraintViolationException;
+import java.util.ArrayList;
+
+import business.sonderwunsch.Sonderwunsch;
+import business.sonderwunsch.SonderwunschModel;
+import controller.DatabaseHelper;
 import gui.basis.BasisView;
-import gui.grundriss.GrundrissControl;
+import gui.kunde.KundeView;
+import javafx.scene.control.Alert;
+import javafx.scene.control.Alert.AlertType;
+
 import javafx.scene.control.CheckBox;
 import javafx.scene.control.Label;
 import javafx.scene.control.TextField;
@@ -11,29 +24,13 @@ public class HeizungenView extends BasisView{
 	
  	// das Control-Objekt des Grundriss-Fensters
 	private HeizungenControl heizungenControl;
-   
-    //---Anfang Attribute der grafischen Oberflaeche---
-    private Label lblWandKueche    	     
-        = new Label("Heizungs-Variante");
-    
-    private Label lblZusHeizkoerper= new Label("zusätzlichen Standard Heizkörper");
-    private Label lblzusHeizkoerperEuro 		= new Label("660,- Euro je Stück");
-    private TextField zusHeizkoerper 	= new TextField();
-    
-    private Label lblglattHeizkoerper		= new Label("Heizkörper mit glatter Oberfläche");
-    private Label lblglattHeizkoerperEuro 		= new Label("160,- Euro je Stück ");
-    private TextField glattHeizkoerper 	= new TextField();
-    
-    
-    private Label lblHandtuchHeizkoerper		= new Label("Handtuchheizkörper");
-    private Label lblhandtuchEuro 		= new Label("660,- Euro je Stück  ");
-    private TextField handtuch 	= new TextField();
-    
-    private Label lblFussbodenheizung		= new Label("Fußbodenheizung DG");
-    private Label lblFussbodenheizungEuro 		= new Label("ohne 8.900€; mit 9990€");
-    
-    private CheckBox chckFußbodenheizungDg		= new CheckBox();
-    //-------Ende Attribute der grafischen Oberflaeche-------
+
+    private SonderwunschModel swModel = SonderwunschModel.getInstance();
+    private ArrayList<Sonderwunsch> swListe;
+	private ArrayList<CheckBox> checkBoxList = new ArrayList<>(); 
+	private TextField gesamtPreisTextField;
+	private int gesamtPreis=0;
+
   
     /**
      * erzeugt ein GrundrissView-Objekt, belegt das zugehoerige Control
@@ -41,41 +38,57 @@ public class HeizungenView extends BasisView{
      * @param grundrissControl GrundrissControl, enthaelt das zugehoerige Control
      * @param grundrissStage Stage, enthaelt das Stage-Objekt fuer diese View
      */
-    public HeizungenView (HeizungenControl heizungenControl, Stage heizungenStage){
+
+    public HeizungenView (HeizungenControl heizungenControl, Stage heizungenStage, ArrayList<Sonderwunsch> swListe){
     	super(heizungenStage);
         this.heizungenControl = heizungenControl;
-        heizungenStage.setTitle("Sonderw�nsche zu Heizungs-Varianten");
+        heizungenStage.setTitle("Sonderwünsche zu Heizungs-Varianten");
+        this.swListe=new ArrayList<Sonderwunsch>(swListe.subList(18,23));        
+
                 
-	    this.initKomponenten();
+	    this.initKomponenten(swListe);
+
 	    this.leseHeizungenSonderwuensche();
     }
   
     /* initialisiert die Steuerelemente auf der Maske */
-    protected void initKomponenten(){
+
+    protected void initKomponenten(ArrayList<Sonderwunsch> swListe){
     	super.initKomponenten(); 
        	super.getLblSonderwunsch().setText("Heizungs-Varianten");
        	
-       
-        super.getGridPaneSonderwunsch().add(lblZusHeizkoerper, 0, 1);
-        super.getGridPaneSonderwunsch().add(lblzusHeizkoerperEuro, 1, 1);
-        super.getGridPaneSonderwunsch().add(zusHeizkoerper, 2, 1);
+       	int offset = 1;
+       	for(Sonderwunsch s : swListe.subList(18, 23)) {
+       		
+       		super.getGridPaneSonderwunsch().add(new Label(s.getBeschreibung()), 0, offset);
+       		
+       		TextField preisFeld = new TextField(Double.toString(s.getPreis()));
+       		preisFeld.setEditable(false);
+        	super.getGridPaneSonderwunsch().add(preisFeld, 1, offset);
+        	
+        	super.getGridPaneSonderwunsch().add(new Label("Euro"), 2, offset);
+        	CheckBox c = new CheckBox();
+        	super.getGridPaneSonderwunsch().add(c, 3, offset);
+        	
+        	checkBoxList.add(c);
+        	//c.setOnAction(e -> berechneUndZeigePreisSonderwuensche());
+       		offset++;
+       	}
+     // Füge die Gesamtpreis-Zeile hinzu
+        Label gesamtLabel = new Label("Gesamtpreis:");
+        super.getGridPaneSonderwunsch().add(gesamtLabel, 0, offset);
         
-        super.getGridPaneSonderwunsch().add(lblglattHeizkoerper, 0, 2);
-        super.getGridPaneSonderwunsch().add(lblglattHeizkoerperEuro, 1, 2);
-        super.getGridPaneSonderwunsch().add(this.glattHeizkoerper, 2, 2);
-        
-        super.getGridPaneSonderwunsch().add(lblHandtuchHeizkoerper, 0, 3);
-        super.getGridPaneSonderwunsch().add(lblhandtuchEuro, 1, 3);
-        super.getGridPaneSonderwunsch().add(this.handtuch, 2, 3);
-        
-        
-        super.getGridPaneSonderwunsch().add(lblFussbodenheizung, 0, 4);
-        super.getGridPaneSonderwunsch().add(lblFussbodenheizungEuro, 1, 4);
-        super.getGridPaneSonderwunsch().add(this.chckFußbodenheizungDg, 2, 4);
+   		gesamtPreisTextField = new TextField(Integer.toString(gesamtPreis));
+   		gesamtPreisTextField.setEditable(false);
+    	super.getGridPaneSonderwunsch().add(gesamtPreisTextField, 1, offset);
+
+        Label gesamtpreisLabel = new Label("Euro");
+        super.getGridPaneSonderwunsch().add(gesamtpreisLabel, 2, offset);
         
     }  
     
-    /**
+    /** 
+
 	 * macht das GrundrissView-Objekt sichtbar.
 	 */
 	public void oeffneHeizungenView(){ 
@@ -85,23 +98,39 @@ public class HeizungenView extends BasisView{
     private void leseHeizungenSonderwuensche(){
     	this.heizungenControl.leseHeizungenSonderwuensche();
     }
-    
+
+    private int[] fuelleSwListe() {
+    	int[] ausgewaehlteSw= new int[swListe.size()];
+    	for (int i = 0; i < swListe.size(); i++) {
+  			if(checkBoxList.get(i).isSelected()) {
+  				ausgewaehlteSw[i]=1;
+  			}else {
+  				ausgewaehlteSw[i]=0;
+  			}
+  		
+  		}
+    	return ausgewaehlteSw;
+    }
+
  	/* berechnet den Preis der ausgesuchten Sonderwuensche und zeigt diesen an */
   	protected void berechneUndZeigePreisSonderwuensche(){
   		// Es wird erst die Methode pruefeKonstellationSonderwuensche(int[] ausgewaehlteSw)
   		// aus dem Control aufgerufen, dann der Preis berechnet.
-  		int gesamtpreis=0;
-  		
-        gesamtpreis += Integer.parseInt(zusHeizkoerper.getText())* 660;
-        gesamtpreis += Integer.parseInt(glattHeizkoerper.getText()) * 160;
-        gesamtpreis += Integer.parseInt(handtuch.getText()) * 660;
-        
 
-	    if (this.chckFußbodenheizungDg.isSelected()){
-	        gesamtpreis += 9990;
-	    }else {
-	    	gesamtpreis += 9990;
-	    } 
+          int[] ausgewaehlteSw = fuelleSwListe();
+
+  		
+  		Boolean berechnePreis = this.heizungenControl.pruefeKonstellationSonderwuensche(ausgewaehlteSw);
+  		if(berechnePreis) {
+  			for (int i = 0; i < swListe.size(); i++) {
+  	  	        if (checkBoxList.get(i).isSelected()) {
+  	  	            gesamtPreis += swListe.get(i).getPreis();
+  	  	        }
+  	  	    }
+  	  	    gesamtPreisTextField.setText(Integer.toString(gesamtPreis));
+  	  	    gesamtPreis=0;
+  		}
+
   	}
 
     @Override
@@ -160,6 +189,68 @@ public class HeizungenView extends BasisView{
   	protected void speichereSonderwuensche(){
  		// Es wird erst die Methode pruefeKonstellationSonderwuensche(int[] ausgewaehlteSw)
   		// aus dem Control aufgerufen, dann die Sonderwuensche gespeichert.
+
+  		
+  		int[] ausgewaehlteSw = fuelleSwListe();
+  		Boolean speichereSw = this.heizungenControl.pruefeKonstellationSonderwuensche(ausgewaehlteSw);
+  		
+  		
+  		if(speichereSw) {
+			ArrayList<Sonderwunsch> wuensche = swModel.getSonderwuensche();
+
+			Connection connection = null;
+			PreparedStatement insertStatement = null;
+			PreparedStatement fehlerStatement = null;
+			int merken=0;
+
+
+			try {
+
+				connection = new DatabaseHelper().getConnection();
+
+				insertStatement = connection.prepareStatement("INSERT INTO Kundenwunsch (Kundennummer, Sonderwunschid, Anzahl) values (?,?,?)");
+				fehlerStatement = connection.prepareStatement("UPDATE Kundenwunsch SET Anzahl = Anzahl + ? WHERE Kundennummer = ? AND Sonderwunschid = ?");
+
+				for(int i=18; i<checkBoxList.size()+18; i++) {
+					if (checkBoxList.get(i-18).isSelected()) {
+						merken=i;
+						insertStatement.setInt(1, KundeView.cmbKundeDropdown.getValue());
+						insertStatement.setInt(2, wuensche.get(i).getSonderwunschId());
+						insertStatement.setInt(3, 1);
+						insertStatement.executeUpdate();
+					}
+							
+				}	
+				System.out.println("Die Sonderwünsche wurden erfolgreich gespeichert.");
+				//schliesseBasisView();
+			}
+			 catch (SQLIntegrityConstraintViolationException e) {
+				if(merken==21 || merken==22) {
+					if(merken==0){
+						Alert alert = new Alert(AlertType.ERROR);
+	        			alert.setTitle("Fehler");
+	        			alert.setHeaderText(null);  // Keine Kopfzeile
+	        			alert.setContentText("Die Fußbodenheizung ist bereits vorhanden!");
+	        			alert.showAndWait();
+					}
+				}
+                try {
+                    fehlerStatement.setInt(1,1);
+                    fehlerStatement.setInt(2, KundeView.cmbKundeDropdown.getValue());
+                    fehlerStatement.setInt(3, wuensche.get(merken).getSonderwunschId());
+                    fehlerStatement.executeUpdate();
+                } catch (SQLException e1) {
+                    e1.printStackTrace();
+                }
+            }
+			catch (Exception e) {
+				System.out.println("Fehler beim Speichern der Sonderwuensche");
+				e.printStackTrace();
+			}
+			 
+  			
+  		}
+
   	}
 
 }

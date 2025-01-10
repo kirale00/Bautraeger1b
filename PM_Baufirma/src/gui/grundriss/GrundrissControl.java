@@ -1,11 +1,19 @@
 package gui.grundriss;
 
+
 import business.kunde.KundeModel;
 import business.sonderwunsch.SonderwunschModel;
 import javafx.scene.control.Alert;
 import javafx.scene.control.Alert.AlertType;
 import javafx.stage.Modality;
 import javafx.stage.Stage;
+
+
+/**
+ * Klasse, welche das Fenster mit den Sonderwuenschen zu den Grundriss-Varianten
+ * kontrolliert.
+ */
+
 
 public final class GrundrissControl {
 
@@ -43,6 +51,7 @@ public final class GrundrissControl {
 			alert.showAndWait();
 			return false;
 		}
+
 		return true;
 	}
 
