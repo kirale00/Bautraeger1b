@@ -15,7 +15,7 @@ import org.junit.jupiter.api.Test;
 import business.kunde.KundeModel;
 import business.sonderwunsch.Sonderwunsch;
 import business.sonderwunsch.SonderwunschModel;
-import gui.heizung.HeizungControl;
+//import gui.heizung.HeizungControl;
 
 public class heizungenTest {
 
